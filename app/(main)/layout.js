@@ -1,5 +1,4 @@
 import { MainNav } from "@/components/MainNav";
-import { SiteFooter } from "@/components/SiteFooter";
 const navLinks = [
   {
     title: "Features",
@@ -27,7 +26,7 @@ const MainLayout = ({ children }) => {
         </div>
       </header>
       <main className="flex-1 pt-20 flex flex-col">{children}</main>
-      <SiteFooter />
+      {/* <SiteFooter /> */}
     </div>
   );
 };

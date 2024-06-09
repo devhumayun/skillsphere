@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Logo } from "./logo";
+import { Logo } from "./Logo";
+
 
 export function SiteFooter({ className }) {
     return (
