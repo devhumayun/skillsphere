@@ -6,7 +6,7 @@ const nextConfig = {
         hostname: "res.cloudinary.com",
       },
       {
-        hostname: "example.com",
+        hostname: "avatars.githubusercontent.com",
       },
     ],
   },
