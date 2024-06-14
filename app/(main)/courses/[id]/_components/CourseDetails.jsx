@@ -6,6 +6,7 @@ import CourseOverview from "./CourseOverview";
 import Instructor from "./Instructor";
 
 const CourseDetails = ({ course }) => {
+    console.log(course?.instructor);
     return (
         <section className="py-8 md:py-12 lg:py-24">
             <div className="container">
@@ -50,7 +51,7 @@ const CourseDetails = ({ course }) => {
                         </TabsList>
                         <CourseOverview description={course?.description} learning={course?.learning} />
                         <CourseCurriculum />
-                        <Instructor />
+                        <Instructor instructor={course?.instructor} />
                     </Tabs>
                 </div>
             </div>

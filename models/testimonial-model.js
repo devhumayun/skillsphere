@@ -11,12 +11,12 @@ const testimonialSchema = new Schema(
       requried: true,
     },
     courseId: {
-      type: String,
-      requried: true,
+      type: Schema.ObjectId,
+      ref: "Course",
     },
     user: {
-      type: String,
-      requried: true,
+      type: Schema.ObjectId,
+      ref: "User",
     },
   },
   {

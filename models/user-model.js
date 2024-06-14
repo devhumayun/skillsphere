@@ -38,6 +38,10 @@ const userSchema = new Schema(
       type: Object,
       requried: true,
     },
+    designation: {
+      required: false,
+      type: String,
+    },
   },
   {
     timestamps: true,
