@@ -26,6 +26,10 @@ const moduleSchema = new Schema(
       type: [String],
       requried: true,
     },
+    duration: {
+      type: Number,
+      requried: true,
+    },
   },
   {
     timestamps: true,

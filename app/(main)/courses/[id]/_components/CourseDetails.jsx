@@ -6,7 +6,6 @@ import CourseOverview from "./CourseOverview";
 import Instructor from "./Instructor";
 
 const CourseDetails = ({ course }) => {
-    console.log(course?.instructor);
     return (
         <section className="py-8 md:py-12 lg:py-24">
             <div className="container">
@@ -50,7 +49,7 @@ const CourseDetails = ({ course }) => {
                             {/* <TabsTrigger value="reviews">Reviews</TabsTrigger> */}
                         </TabsList>
                         <CourseOverview description={course?.description} learning={course?.learning} />
-                        <CourseCurriculum />
+                        <CourseCurriculum course={course} />
                         <Instructor instructor={course?.instructor} />
                     </Tabs>
                 </div>
