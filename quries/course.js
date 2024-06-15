@@ -8,10 +8,12 @@ import { Module } from "@/models/module-models";
 import { Testimonial } from "@/models/testimonial-model";
 
 import { User } from "@/models/user-model";
+import { dbConnect } from "@/services/mongo";
 import { getEnrollmentForCourse } from "./enrollments";
 import { getTestimonialForCourse } from "./testimonials";
 
 export const getCourseList = async () => {
+  await dbConnect();
   const courses = await Course.find({})
     .select([
       "title",
@@ -45,6 +47,7 @@ export const getCourseList = async () => {
 };
 
 export const getCourseDetails = async (id) => {
+  await dbConnect();
   const course = await Course.findById(id)
     .populate({
       path: "category",
@@ -68,6 +71,7 @@ export const getCourseDetails = async (id) => {
 };
 
 export const getCourseDetailsByInstructor = async (instructorId) => {
+  await dbConnect();
   const courses = await Course.find({ instructor: instructorId }).lean();
 
   // calculate total Instructor course's enrollments
