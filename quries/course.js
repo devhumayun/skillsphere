@@ -64,6 +64,10 @@ export const getCourseDetails = async (id) => {
     .populate({
       path: "testimonials",
       model: Testimonial,
+      populate: {
+        path: "user",
+        model: "User",
+      },
     })
     .lean();
 

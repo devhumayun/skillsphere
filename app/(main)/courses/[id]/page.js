@@ -6,7 +6,6 @@ import Testimonials from "./_components/Testimonials";
 
 const SingleCoursePage = async ({ params: { id } }) => {
   const course = await getCourseDetails(id);
-
   return (
     <>
       <CourseDetailsIntro
@@ -18,7 +17,9 @@ const SingleCoursePage = async ({ params: { id } }) => {
       <CourseDetails course={course} />
 
       {/* Testimonials */}
-      <Testimonials />
+      {course?.testimonials && (
+        <Testimonials testimonials={course.testimonials} />
+      )}
       {/* Releated Course */}
       <RelatedCourse />
       {/* Authors */}
