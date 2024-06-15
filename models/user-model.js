@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      requried: true,
+      requried: false,
     },
     role: {
       type: String,
@@ -28,15 +28,15 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
-      requried: true,
+      requried: false,
     },
     profilePicture: {
       type: String,
-      requried: true,
+      requried: false,
     },
     socialMedia: {
       type: Object,
-      requried: true,
+      requried: false,
     },
     designation: {
       required: false,
