@@ -45,6 +45,7 @@ export function SignupForm({ role }) {
         setLoading(false)
       } else {
         setLoading(true)
+        const userRole = ((role === "student") || (role === "instructor")) ? role : "student";
         const res = await fetch("/api/register", {
           method: "POST",
           headers: {
@@ -104,20 +105,20 @@ export function SignupForm({ role }) {
             </div>
             <div className="grid gap-2 relative">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type={showPass ? "password" : "text"} />
+              <Input id="password" name="password" type={showPass ? "text" : "password"} />
               <span onClick={() => setShowPass(!showPass)} className="absolute right-3 top-8 text-[20px] cursor-pointer">
                 {
-                  showPass ? <IoEye /> : <IoEyeOff />
+                  showPass ? <IoEyeOff /> : <IoEye />
                 }
 
               </span>
             </div>
             <div className="grid gap-2 relative">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input id="confirmPassword" name="confirmPassword" type={showPass ? "password" : "text"} />
+              <Input id="confirmPassword" name="confirmPassword" type={showPass ? "text" : "password"} />
               <span onClick={() => setShowPass(!showPass)} className="absolute right-3 top-8 text-[20px] cursor-pointer">
                 {
-                  showPass ? <IoEye /> : <IoEyeOff />
+                  showPass ? <IoEyeOff /> : <IoEye />
                 }
 
               </span>
