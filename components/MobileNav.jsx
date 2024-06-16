@@ -1,7 +1,10 @@
+"use client"
 import Link from "next/link";
 
 import { useLockBody } from "@/hooks/use-lock-body";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import {
     DropdownMenu,
@@ -11,6 +14,14 @@ import {
 } from "./ui/dropdown-menu";
 
 export function MobileNav({ items, children }) {
+
+    const [loggedInSession, setLoggedInSession] = useState(null)
+    const { data: session } = useSession()
+
+    useEffect(() => {
+        setLoggedInSession(session)
+    }, [session])
+
     useLockBody();
 
     return (
@@ -34,29 +45,32 @@ export function MobileNav({ items, children }) {
                         </Link>
                     ))}
                 </nav>
-                <div className="items-center gap-3 flex lg:hidden">
-                    <Link
-                        href="/login"
-                        className={cn(buttonVariants({ size: "sm" }), "px-4")}
-                    >
-                        Login
-                    </Link>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm">
-                                Register
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="center" className="w-56 mt-4">
-                            <DropdownMenuItem className="cursor-pointer">
-                                <Link href="/register/student">Student</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
-                                <Link href="/register/instructor">Instructor</Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                {
+                    !loggedInSession &&
+                    <div className="items-center gap-3 flex lg:hidden">
+                        <Link
+                            href="/login"
+                            className={cn(buttonVariants({ size: "sm" }), "px-4")}
+                        >
+                            Login
+                        </Link>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm">
+                                    Register
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="center" className="w-56 mt-4">
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link href="/register/student">Student</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link href="/register/instructor">Instructor</Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                }
                 {children}
             </div>
         </div>

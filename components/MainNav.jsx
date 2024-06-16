@@ -2,9 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Menu, X } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import { Logo } from "./Logo";
 import { MobileNav } from "./MobileNav";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -13,6 +14,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export function MainNav({ items, children }) {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const [loggedInSession, setLoggedInSession] = useState(null)
+    const { data: session } = useSession()
+
+    useEffect(() => {
+        setLoggedInSession(session)
+    }, [session])
 
     return (
         <>
@@ -40,28 +47,31 @@ export function MainNav({ items, children }) {
                 )}
             </div>
             <nav className="flex items-center gap-3">
-                <div className="items-center gap-3 hidden lg:flex">
-                    <Link
-                        href="/login"
-                        className={cn(buttonVariants({ size: "sm" }), "px-4")}>
-                        Login
-                    </Link>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="sm">
-                                Register
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 mt-4">
-                            <DropdownMenuItem className="cursor-pointer">
-                                <Link href="/register/student">Student</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
-                                <Link href="/register/instructor">Instructor</Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                {
+                    !loggedInSession &&
+                    <div className="items-center gap-3 hidden lg:flex">
+                        <Link
+                            href="/login"
+                            className={cn(buttonVariants({ size: "sm" }), "px-4")}>
+                            Login
+                        </Link>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="sm">
+                                    Register
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-56 mt-4">
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link href="/register/student">Student</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <Link href="/register/instructor">Instructor</Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                }
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <div className="cursor-pointer">
@@ -85,7 +95,7 @@ export function MainNav({ items, children }) {
                             <Link href="">Testimonials & Certificates</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer" asChild>
-                            <Link href="">Logout</Link>
+                            <Link href="#" onClick={() => { signOut() }}>Logout</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -94,7 +104,7 @@ export function MainNav({ items, children }) {
                     onClick={() => setShowMobileMenu(!showMobileMenu)}>
                     {showMobileMenu ? <X /> : <Menu />}
                 </button>
-            </nav>
+            </nav >
         </>
     );
 }
