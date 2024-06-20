@@ -16,3 +16,9 @@ export const credentailsLogin = async (formData) => {
     throw new Error(error);
   }
 };
+
+export const doSocialLogin = async (formData) => {
+  const action = formData.get("action");
+
+  await signIn(action, { redirectTo: "/courses" });
+};
