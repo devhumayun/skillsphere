@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { useLockBody } from "@/hooks/use-lock-body";
 import { cn } from "@/lib/utils";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button, buttonVariants } from "./ui/button";
 import {
@@ -44,6 +44,12 @@ export function MobileNav({ items, children }) {
                             {item.title}
                         </Link>
                     ))}
+                    {
+                        loggedInSession &&
+                        <span className="cursor-pointer">
+                            <Link href="#" onClick={() => { signOut() }}>Logout</Link>
+                        </span>
+                    }
                 </nav>
                 {
                     !loggedInSession &&
