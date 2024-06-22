@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const enrollmentSchema = new Schema({
   enrollmentDate: {
     type: Date,
-    requried: true,
+    requried: false,
   },
   status: {
     type: String,
@@ -11,7 +11,7 @@ const enrollmentSchema = new Schema({
   },
   completionDate: {
     type: Date,
-    requried: true,
+    requried: false,
   },
   method: {
     type: String,

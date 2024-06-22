@@ -6,6 +6,8 @@ const Instructor = async ({ instructor }) => {
 
     const courseByInstructor = await getCourseDetailsByInstructor(instructor?._id.toString())
 
+    console.log(courseByInstructor.enrollments);
+
     return (
         <TabsContent value="instructor">
             {/* each tab content can be independent component */}

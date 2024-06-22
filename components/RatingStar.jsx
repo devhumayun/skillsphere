@@ -6,7 +6,7 @@ const RatingStar = ({ rating }) => {
     return (
         <>
             {
-                stars?.map((i) => (
+                stars?.map((i, star) => (
                     <BsFillStarFill key={i} />
                 ))
             }

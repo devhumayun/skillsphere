@@ -85,9 +85,10 @@ export const getCourseDetailsByInstructor = async (instructorId) => {
       return enrollment;
     })
   );
-  const totalEnrollment = enrollments.reduce((item, currentValue) => {
-    return item.length + currentValue.length;
-  });
+
+  const totalEnrollment = enrollments.reduce((acc, obj) => {
+    return acc + obj.length;
+  }, 0);
 
   // calculate total courses rating and review
   const testimonials = await Promise.all(

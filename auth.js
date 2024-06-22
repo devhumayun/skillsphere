@@ -10,7 +10,7 @@ import mongoClientPromise from "./services/mongoClientPromise";
 const refreshAccessToken = async (token) => {
   try {
     const url =
-      "https://oauth2.googleapis.com/token" +
+      "https://oauth2.googleapis.com/token?" +
       new URLSearchParams({
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -18,9 +18,9 @@ const refreshAccessToken = async (token) => {
         refresh_token: token?.refreshToken,
       });
 
-    const response = fetch(url, {
+    const response = await fetch(url, {
       headers: {
-        "Content=Type": "appliation/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       method: "POST",
     });
@@ -28,7 +28,7 @@ const refreshAccessToken = async (token) => {
     const refreshTokens = await response.json();
 
     if (!response.ok) {
-      return refreshTokens;
+      throw refreshTokens;
     }
 
     return {

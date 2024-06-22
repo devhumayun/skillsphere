@@ -1,4 +1,3 @@
-import RatingStar from "@/components/RatingStar";
 import { SectionTitle } from "@/components/SectionTitle";
 import {
     Carousel,
@@ -54,7 +53,7 @@ const Testimonials = ({ testimonials }) => {
                                                     {testimonial?.user?.firstName} { } {testimonial?.user?.lastName}
                                                 </p>
                                                 <div className="flex justify-center gap-0.5 text-yellow-600">
-                                                    <RatingStar rating={testimonial?.rating} />
+                                                    {/* <RatingStar rating={testimonial?.rating} /> */}
                                                 </div>
                                             </div>
                                         </div>
