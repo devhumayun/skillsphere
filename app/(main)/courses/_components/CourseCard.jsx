@@ -38,7 +38,7 @@ const CourseCard = ({ course }) => {
                     {formatPrice(course?.price)}
                 </p>
 
-                <CourseEnrollAction isLink={true} course={course} />
+                <CourseEnrollAction isLink={true} courseId={course?.id} />
             </div>
         </div>
     )

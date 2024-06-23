@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { ArrowRight } from "lucide-react"
 import { Button, buttonVariants } from "./ui/button"
 
-const CourseEnrollAction = ({ isLink, course }) => {
+const CourseEnrollAction = ({ isLink, courseId }) => {
 
     const enrollFormAction = async (data) => {
         const { url } = await createCheckoutSession(data)
@@ -13,9 +13,7 @@ const CourseEnrollAction = ({ isLink, course }) => {
 
     return (<>
         <form action={enrollFormAction}>
-            <input type="hidden" name="courseName" value={course?.title} />
-            <input type="hidden" name="coursePrice" value={course?.price} />
-            <input type="hidden" name="courseId" value={course?.id} />
+            <input type="hidden" name="courseId" value={courseId} />
             {
                 isLink ? (<Button
                     type="submit"
