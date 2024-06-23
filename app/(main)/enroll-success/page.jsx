@@ -11,21 +11,32 @@ import { redirect } from "next/navigation";
 
 const Success = async ({ searchParams: { session_id, courseId } }) => {
 
+  // check the stripe session_id 
   if (!session_id) {
     throw new Error("Invalid session id. Session id must start with cs_")
   }
 
+  // get loggedIn user & check the user
   const userSession = await auth()
   if (!userSession?.user?.email) {
     redirect("/login")
   }
+
+  // get loggedIn user details my email
   const loggedInUser = await getUserByEmail(userSession?.user?.email)
 
+  // loggedin user id for credentails and auth login user
+  const loggedInUserId = loggedInUser?.id ? loggedInUser?.id : loggedInUser?._id
+
+  // get enrolled course details
   const course = await getCourseDetails(courseId)
+
+  // get checkout session details
   const checkoutSession = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ["line_items", "payment_intent"]
   })
 
+  // take out payment intent for knowing payment status
   const paymentIntent = checkoutSession?.payment_intent
   const paymentStatus = paymentIntent?.status
 
@@ -39,7 +50,7 @@ const Success = async ({ searchParams: { session_id, courseId } }) => {
   const instructorName = `${course?.instructor?.firstName} ${course?.instructor?.lastName}`;
   const instructorEmail = course?.instructor?.email;
 
-  const loggedInUserId = loggedInUser?.id ? loggedInUser?.id : loggedInUser?._id
+
 
   if (paymentStatus === "succeeded") {
 

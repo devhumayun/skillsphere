@@ -11,7 +11,6 @@ export const createCheckoutSession = async (data) => {
   const origin = headers().get("origin");
   const courseId = data.get("courseId");
   const coursePrice = data.get("coursePrice");
-  console.log(courseId);
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "payment",
     submit_type: "auto",

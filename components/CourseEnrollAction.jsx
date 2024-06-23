@@ -6,12 +6,8 @@ import { Button, buttonVariants } from "./ui/button"
 
 const CourseEnrollAction = ({ isLink, course }) => {
 
-
     const enrollFormAction = async (data) => {
-
-
         const { url } = await createCheckoutSession(data)
-        console.log(url);
         window.location.assign(url)
     }
 
