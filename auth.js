@@ -95,31 +95,31 @@ export const {
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, account, user }) {
-      if (account && user) {
-        return {
-          user,
-          accessToken: account?.access_token,
-          accessTokenExpireIn: Date.now() + account?.expires_in * 1000,
-          refreshToken: account?.refresh_token,
-        };
-      }
+  // callbacks: {
+  //   async jwt({ token, account, user }) {
+  //     if (account && user) {
+  //       return {
+  //         user,
+  //         accessToken: account?.access_token,
+  //         accessTokenExpireIn: Date.now() + account?.expires_in * 1000,
+  //         refreshToken: account?.refresh_token,
+  //       };
+  //     }
 
-      if (Date.now() < token?.accessTokenExpireIn) {
-        return token;
-      }
+  //     if (Date.now() < token?.accessTokenExpireIn) {
+  //       return token;
+  //     }
 
-      return refreshAccessToken(token);
-    },
-    async session({ token, session }) {
-      session.user = token?.user;
-      (session.accessToken = token?.access_token),
-        (session.error = token?.error);
+  //     return refreshAccessToken(token);
+  //   },
+  //   async session({ token, session }) {
+  //     session.user = token?.user;
+  //     (session.accessToken = token?.access_token),
+  //       (session.error = token?.error);
 
-      return session;
-    },
-  },
+  //     return session;
+  //   },
+  // },
   trustHost: true,
   trustHostedDomain: true,
 });
