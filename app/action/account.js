@@ -18,7 +18,6 @@ export async function updateUserInfo(email, updatedData) {
 
 export const updateProfilePhoto = async (email, profileData) => {
   try {
-    console.log(profileData);
     const filter = { email: email };
     await User.findOneAndUpdate(
       filter,
@@ -27,7 +26,7 @@ export const updateProfilePhoto = async (email, profileData) => {
       },
       { new: true }
     );
-    revalidatePath("/account");
+    revalidatePath("/");
   } catch (error) {
     throw new Error(error);
   }

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import defaultAvater from '@/public/images/avatar.jpeg';
 import { Menu, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -13,10 +14,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button, buttonVariants } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
-export function MainNav({ items, children }) {
+export function MainNav({ items, children, loggedInUser }) {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [loggedInSession, setLoggedInSession] = useState(null)
     const { data: session } = useSession()
+
+
 
     if (session?.error === "RefreshAccessTokenError") {
         redirect("/login")
@@ -82,7 +85,7 @@ export function MainNav({ items, children }) {
                         <div className="cursor-pointer">
                             <Avatar>
                                 <AvatarImage
-                                    src="https://github.com/shadcn.png"
+                                    src={loggedInUser?.image ? loggedInUser?.image : defaultAvater}
                                     alt="@shadcn"
                                 />
                                 <AvatarFallback>CN</AvatarFallback>
