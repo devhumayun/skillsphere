@@ -1,12 +1,16 @@
 "use client"
 
 import { updateUserInfo } from "@/app/action/account";
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { toast } from "sonner";
 const PersonalDetails = ({ userInfo }) => {
+
+    const [loading, setLoading] = useState(false)
 
 
     let firstName
@@ -42,10 +46,14 @@ const PersonalDetails = ({ userInfo }) => {
     const handlePersonalInfoUpdate = async (e) => {
 
         e.preventDefault()
+        setLoading(true)
         try {
             await updateUserInfo(userInfo?.email, userDetails)
+            toast.success("Update successfull")
+            setLoading(false)
         } catch (error) {
-            console.log(error);
+            toast.error(`Error: ${error.message}`)
+            setLoading(false)
         }
 
     }
@@ -122,8 +130,8 @@ const PersonalDetails = ({ userInfo }) => {
                     </div>
                 </div>
                 {/*end row*/}
-                <Button className="mt-5" asChild>
-                    <input type="submit" name="send" value="Save Changes" />
+                <Button className="mt-5" type="submit">
+                    {loading ? <Loader /> : "Update Information"}
                 </Button>
             </form>
             {/*end form*/}

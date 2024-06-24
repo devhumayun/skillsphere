@@ -14,17 +14,13 @@ const AccountSidebar = async () => {
 
     const loggedInUser = await getUserByEmail(session?.user?.email)
     let userName
-    if (loggedInUser?.firstName && loggedInUser?.firstName) {
-        userName = `${loggedInUser?.firstName}  ${loggedInUser?.firstName}`
+    if (loggedInUser?.firstName && loggedInUser?.lastName) {
+        userName = `${loggedInUser?.firstName}  ${loggedInUser?.lastName}`
     } else {
         userName = loggedInUser?.name
     }
-    let userImage
-    if (loggedInUser?.profilePicture) {
-        userImage = loggedInUser?.profilePicture
-    } else {
-        userImage = loggedInUser?.image
-    }
+    const userImage = loggedInUser?.image
+
 
     return (
         <div className="lg:w-1/4 md:px-3">

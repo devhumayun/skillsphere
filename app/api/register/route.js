@@ -6,6 +6,9 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const { firstName, lastName, email, password, userRole } =
     await request.json();
+
+  console.log(firstName, lastName, email, password, userRole);
+
   await dbConnect();
   const hashPass = await bcrypt.hash(password, 5);
 
@@ -17,8 +20,12 @@ export const POST = async (request) => {
     role: userRole,
   };
 
+  console.log(newUser);
+
   try {
-    await User.create(newUser);
+    const user = await User.create(newUser);
+
+    console.log(user);
 
     return new NextResponse("User created successfull", {
       status: 201,

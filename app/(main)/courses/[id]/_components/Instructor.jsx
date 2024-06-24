@@ -15,7 +15,7 @@ const Instructor = async ({ instructor }) => {
                 <div className="md:flex md:gap-x-5 mb-8">
                     <div className="h-[310px] w-[270px] max-w-full  flex-none rounded mb-5 md:mb-0">
                         <Image
-                            src={instructor?.profilePicture}
+                            src={instructor?.image}
                             alt={instructor?.firstName}
                             className="w-full h-full object-cover rounded"
                             height={100}

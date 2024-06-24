@@ -23,7 +23,7 @@ const CourseDetails = ({ course }) => {
                     <div className="flex items-center gap-2">
                         <Image
                             className="w-[40px] h-[40px] rounded-full"
-                            src={course?.instructor?.profilePicture}
+                            src={course?.instructor?.image}
                             alt={course?.instructor?.firstName}
                             width={40}
                             height={40}

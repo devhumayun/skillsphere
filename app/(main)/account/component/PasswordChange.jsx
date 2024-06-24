@@ -1,14 +1,52 @@
 "use client"
 
+import { updateUserPassword } from "@/app/action/account"
+import Loader from "@/components/Loader"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { toast } from "sonner"
 
-const PasswordChange = ({ email }) => {
+const PasswordChange = ({ user }) => {
 
-    const handleChangepassword = (e) => {
-        e.preventDefault()
+    const [changePass, setChangePass] = useState({
+        "oldPassword": "",
+        "newPassword": "",
+        "reTypePass": ""
+    })
+
+    const [loading, setLoading] = useState(false)
+
+    const handleInputChange = (e) => {
+        const field = e.target.name
+        const value = e.target.value
+
+        setChangePass({
+            ...changePass,
+            [field]: value
+        })
     }
+
+    const handleChangepassword = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        if (changePass.newPassword != changePass.reTypePass) {
+            return toast.error("New password & re-type password not matched!")
+            setLoading(false)
+        }
+
+        try {
+            console.log(changePass)
+            await updateUserPassword(user?.email, changePass)
+            toast.success("Password updated successfull!")
+            setLoading(false)
+        } catch (error) {
+            return toast.error(`Error: ${error.message}`)
+            setLoading(false)
+        }
+    }
+
 
     return (
         <div>
@@ -17,16 +55,21 @@ const PasswordChange = ({ email }) => {
             </h5>
             <form onSubmit={handleChangepassword}>
                 <div className="grid grid-cols-1 gap-5">
-                    <div>
-                        <Label className="mb-2 block">Old password :</Label>
-                        <Input
-                            type="password"
-                            placeholder="Old password"
-                            name="oldPassword"
-                            id="oldPassword"
-                            required=""
-                        />
-                    </div>
+                    {
+                        user?.password &&
+                        <div>
+                            <Label className="mb-2 block">Old password :</Label>
+                            <Input
+                                type="password"
+                                placeholder="Old password"
+                                name="oldPassword"
+                                id="oldPassword"
+                                onChange={handleInputChange}
+                                value={changePass.oldPassword}
+                                required
+                            />
+                        </div>
+                    }
                     <div>
                         <Label className="mb-2 block">New password :</Label>
                         <Input
@@ -34,7 +77,9 @@ const PasswordChange = ({ email }) => {
                             placeholder="New password"
                             name="newPassword"
                             id="newPassword"
-                            required=""
+                            onChange={handleInputChange}
+                            value={changePass.newPassword}
+                            required
                         />
                     </div>
                     <div>
@@ -44,13 +89,17 @@ const PasswordChange = ({ email }) => {
                         <Input
                             type="password"
                             placeholder="Re-type New password"
-                            required=""
+                            name="reTypePass"
+                            id="reTypePass"
+                            onChange={handleInputChange}
+                            value={changePass.reTypePass}
+                            required
                         />
                     </div>
                 </div>
                 {/*end grid*/}
                 <Button className="mt-5" type="submit">
-                    Save password
+                    {loading ? <Loader /> : "Change Password"}
                 </Button>
             </form>
         </div>

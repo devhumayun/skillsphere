@@ -33,9 +33,9 @@ const Testimonials = ({ testimonials }) => {
                                     <blockquote className="rounded-lg bg-gray-50 p-6  sm:p-8 shadow-sm">
                                         <div className="flex items-center gap-4">
                                             {
-                                                testimonial?.user?.profilePicture ? <Image
+                                                testimonial?.user?.image ? <Image
                                                     alt={testimonial?.user}
-                                                    src={testimonial?.user?.profilePicture}
+                                                    src={testimonial?.user?.image}
                                                     width="56"
                                                     height="56"
                                                     className="size-14 rounded-full object-cover"

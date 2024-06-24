@@ -1,23 +1,59 @@
 "use client"
 
+import { updateUserInfo } from "@/app/action/account"
+import Loader from "@/components/Loader"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { toast } from "sonner"
 
-const ContactInfo = ({ email }) => {
+const ContactInfo = ({ user }) => {
+
+    const [contactInfo, setContactInfo] = useState({
+        phone: user?.phone || ""
+    })
+
+    const [loading, setLoading] = useState(false)
+
+    const handleInputChange = (e) => {
+        const field = e.target.name
+        const value = e.target.value
+
+        setContactInfo({
+            ...contactInfo,
+            [field]: value
+        })
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            await updateUserInfo(user?.email, contactInfo)
+            toast.success("Phone number updated!")
+            setLoading(false)
+        } catch (error) {
+            toast.error(`Error: ${error.message}`)
+            setLoading(false)
+        }
+
+    }
+
     return (
         <div>
             <h5 className="text-lg font-semibold mb-4">Contact Info :</h5>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-5">
                     <div>
                         <Label className="mb-2 block">Phone No. :</Label>
                         <Input
-                            name="number"
                             id="number"
                             type="number"
-                            name="number"
+                            name="phone"
                             placeholder="Phone :"
+                            value={contactInfo?.phone}
+                            onChange={handleInputChange}
                         />
                     </div>
                     <div>
@@ -32,7 +68,7 @@ const ContactInfo = ({ email }) => {
                 </div>
                 {/*end grid*/}
                 <Button className="mt-5" type="submit">
-                    Add
+                    {loading ? <Loader /> : "Add"}
                 </Button>
             </form>
         </div>

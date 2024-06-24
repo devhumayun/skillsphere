@@ -30,7 +30,7 @@ const userSchema = new Schema(
       type: String,
       requried: false,
     },
-    profilePicture: {
+    image: {
       type: String,
       requried: false,
     },

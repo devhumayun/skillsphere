@@ -46,6 +46,7 @@ export function SignupForm({ role }) {
       } else {
         setLoading(true)
         const userRole = ((role === "student") || (role === "instructor")) ? role : "student";
+        console.log(firstName, lastName, email, password, userRole)
         const res = await fetch("/api/register", {
           method: "POST",
           headers: {
@@ -55,6 +56,8 @@ export function SignupForm({ role }) {
             firstName, lastName, email, password, userRole
           })
         })
+
+        console.log(res);
 
         if (res.status === 201) {
           router.push("/login")
