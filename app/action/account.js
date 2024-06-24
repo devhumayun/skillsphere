@@ -16,6 +16,23 @@ export async function updateUserInfo(email, updatedData) {
   }
 }
 
+export const updateProfilePhoto = async (email, profileData) => {
+  try {
+    console.log(profileData);
+    const filter = { email: email };
+    await User.findOneAndUpdate(
+      filter,
+      {
+        image: profileData,
+      },
+      { new: true }
+    );
+    revalidatePath("/account");
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const updateUserPassword = async (email, passwordData) => {
   try {
     const { oldPassword, newPassword } = passwordData;
