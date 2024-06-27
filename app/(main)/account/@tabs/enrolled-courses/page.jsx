@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
 import { getLoggedInUserAllEnrollments } from "@/quries/enrollments";
 import { getUserByEmail } from "@/quries/user";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import EnrolledCourseCard from "../../component/EnrolledCourseCard";
 
@@ -20,8 +22,12 @@ async function EnrolledCourses() {
 					<EnrolledCourseCard key={enrollment?.id} enrollment={enrollment} />
 				))
 			) : (
-				<div>
+				<div className="">
 					<p>No enrollment found!</p>
+					<Link href={"/courses"}>
+						<Button variant="link"> Explore Now </Button>
+					</Link>
+
 				</div>
 			)}
 		</div>
