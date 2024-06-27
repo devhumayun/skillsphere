@@ -20,6 +20,20 @@ export const getLoggedInUserAllEnrollments = async (userId) => {
   return replaceMongoIdInArray(enrollments);
 };
 
+export const hasEnrolledThisCourse = async (courseId, userId) => {
+  try {
+    const course = await Enrollment.findOne({
+      course: courseId,
+      student: userId,
+    }).lean();
+
+    if (!course) return false;
+    return true;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const enrollInCourse = async (courseId, userId, paymentMethod) => {
   const newData = {
     status: "not-started",

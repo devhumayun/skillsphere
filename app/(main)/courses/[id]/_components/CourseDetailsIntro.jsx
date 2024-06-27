@@ -1,10 +1,20 @@
+import { auth } from "@/auth"
 import CourseEnrollAction from "@/components/CourseEnrollAction"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { hasEnrolledThisCourse } from "@/quries/enrollments"
+import { getUserByEmail } from "@/quries/user"
 import Image from "next/image"
 import Link from "next/link"
 
-const CourseDetailsIntro = ({ course }) => {
+const CourseDetailsIntro = async ({ course }) => {
+
+    const session = await auth()
+    const loggedInUser = await getUserByEmail(session?.user?.email)
+
+    // check: If the user already enrolled in this course or not
+    const alreadyEnrolled = await hasEnrolledThisCourse(course?.id, loggedInUser?.id)
+
     return (
         <div className="overflow-x-hidden  grainy">
             <section className="pt-12  sm:pt-16">
@@ -22,7 +32,21 @@ const CourseDetailsIntro = ({ course }) => {
                             </p>
 
                             <div className="mt-6 flex items-center justify-center flex-wrap gap-3">
-                                <CourseEnrollAction courseId={course?.id} />
+                                {
+                                    alreadyEnrolled ? (
+                                        <Link href={"#"}>
+                                            <Button
+                                                variant="link"
+                                                className="text-sm text-white  gap-1 bg-slate-900"
+                                            >
+                                                Access Now
+                                            </Button>
+                                        </Link>
+                                    ) : (
+                                        <CourseEnrollAction courseId={course?.id} />
+                                    )
+                                }
+
                                 <Link
                                     href=""
                                     className={cn(
