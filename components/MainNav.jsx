@@ -19,7 +19,9 @@ export function MainNav({ items, children, loggedInUser }) {
     const [loggedInSession, setLoggedInSession] = useState(null)
     const { data: session } = useSession()
 
+    const fullName = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`
 
+    const avatarFallBack = loggedInUser?.firstName.substring(0, 2)
 
     if (session?.error === "RefreshAccessTokenError") {
         redirect("/login")
@@ -86,9 +88,10 @@ export function MainNav({ items, children, loggedInUser }) {
                             <Avatar>
                                 <AvatarImage
                                     src={loggedInUser?.image ? loggedInUser?.image : defaultAvater}
-                                    alt="@shadcn"
+                                    className="object-cover"
+                                    alt={fullName}
                                 />
-                                <AvatarFallback>CN</AvatarFallback>
+                                <AvatarFallback><span className="uppercase font-bold">{avatarFallBack}</span></AvatarFallback>
                             </Avatar>
                         </div>
                     </DropdownMenuTrigger>
