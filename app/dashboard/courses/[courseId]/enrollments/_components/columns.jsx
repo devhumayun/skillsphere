@@ -1,22 +1,13 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { GraduationCap } from "lucide-react";
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
-import Link from "next/link";
+import { formateMyDate } from "@/lib/formatMyDate";
+import { ArrowUpDown } from "lucide-react";
 
 export const columns = [
   {
     id: "name",
-    accessorKey: "student.name",
+    accessorKey: "studentName",
     header: ({ column }) => {
       return (
         <Button
@@ -29,7 +20,7 @@ export const columns = [
     },
   },
   {
-    accessorKey: "student.email",
+    accessorKey: "email",
     header: ({ column }) => {
       return (
         <Button
@@ -42,7 +33,7 @@ export const columns = [
     },
   },
   {
-    accessorKey: "student.quizMark",
+    accessorKey: "quizMark",
     header: ({ column }) => {
       return (
         <Button
@@ -55,7 +46,7 @@ export const columns = [
     },
   },
   {
-    accessorKey: "student.progress",
+    accessorKey: "progress",
     header: ({ column }) => {
       return (
         <Button
@@ -66,9 +57,13 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const progress = row.getValue("progress")
+      return `${progress}%`
+    }
   },
   {
-    accessorKey: "date",
+    accessorKey: "enrollmentDate",
     header: ({ column }) => {
       return (
         <Button
@@ -79,6 +74,11 @@ export const columns = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const enrollmentDate = row.getValue("enrollmentDate")
+      return formateMyDate(enrollmentDate)
+    }
+
   },
   // {
   //   id: "actions",

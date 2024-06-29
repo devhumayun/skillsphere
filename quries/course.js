@@ -74,7 +74,7 @@ export const getCourseDetails = async (id) => {
   return replaceMongoIdInObject(course);
 };
 
-export const getCourseDetailsByInstructor = async (instructorId) => {
+export const getCourseDetailsByInstructor = async (instructorId, expand) => {
   await dbConnect();
   const courses = await Course.find({ instructor: instructorId }).lean();
 
@@ -102,6 +102,14 @@ export const getCourseDetailsByInstructor = async (instructorId) => {
     totalTestimonials.reduce((acc, obj) => {
       return acc + obj.rating;
     }, 0) / totalTestimonials.length;
+
+  if (expand) {
+    return {
+      course: courses.flat(),
+      enrollments: enrollments.flat(),
+      reviews: totalTestimonials,
+    };
+  }
 
   return {
     course: courses.length,

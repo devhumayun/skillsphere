@@ -32,18 +32,17 @@ const PasswordChange = ({ user }) => {
         e.preventDefault()
         setLoading(true)
         if (changePass.newPassword != changePass.reTypePass) {
-            return toast.error("New password & re-type password not matched!")
             setLoading(false)
+            return toast.error("New password & re-type password not matched!")
         }
 
         try {
-            console.log(changePass)
             await updateUserPassword(user?.email, changePass)
             toast.success("Password updated successfull!")
             setLoading(false)
         } catch (error) {
-            return toast.error(`Error: ${error.message}`)
             setLoading(false)
+            return toast.error(`Error: ${error.message}`)
         }
     }
 

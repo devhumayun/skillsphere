@@ -1,3 +1,4 @@
+import { COURSES_DATA, instructorDashboardData } from "@/lib/dashboardHelper";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 
@@ -16,11 +17,11 @@ const courses = [
   },
 ];
 const CoursesPage = async () => {
+
+  const courses = await instructorDashboardData(COURSES_DATA)
+
   return (
     <div className="p-6">
-      {/* <Link href="/teacher/create">
-        <Button>New Course</Button>
-      </Link> */}
       <DataTable columns={columns} data={courses} />
     </div>
   );

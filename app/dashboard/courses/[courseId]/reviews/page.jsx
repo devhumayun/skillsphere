@@ -1,3 +1,5 @@
+import { REVIEW, instructorDashboardData } from "@/lib/dashboardHelper";
+import { getCourseDetails } from "@/quries/course";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 
@@ -15,11 +17,18 @@ const reviews = [
     rating: 5,
   },
 ];
-const ReviewsPage = async () => {
+const ReviewsPage = async ({ params: { courseId } }) => {
+
+  const course = await getCourseDetails(courseId)
+
+  const reviewData = await instructorDashboardData(REVIEW)
+
+  const reviewdForACourse = reviewData.filter((review) => review?.courseId.toString() === courseId)
+
   return (
     <div className="p-6">
-      <h2>Think in a Redux way reviews</h2>
-      <DataTable columns={columns} data={reviews} />
+      <h2 className="font-bold">{course?.title}</h2>
+      <DataTable columns={columns} data={reviewdForACourse} />
     </div>
   );
 };
