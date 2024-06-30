@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { courseUpdate } from "@/app/action/course";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -27,13 +28,14 @@ const formSchema = z.object({
 export const PriceForm = ({ initialData, courseId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: initialData?.price || undefined,
+      price: initialData || undefined,
     },
   });
 
@@ -41,6 +43,9 @@ export const PriceForm = ({ initialData, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
+
+      setLoading(true)
+      await courseUpdate(courseId, values)
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -71,7 +76,7 @@ export const PriceForm = ({ initialData, courseId }) => {
             !initialData.price && "text-slate-500 italic"
           )}
         >
-          {initialData.price ? formatPrice(initialData.price) : "No price"}
+          {initialData ? formatPrice(initialData) : "No price"}
         </p>
       )}
       {isEditing && (

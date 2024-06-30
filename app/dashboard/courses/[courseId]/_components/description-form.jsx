@@ -1,9 +1,6 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { toast } from "sonner";
+import { courseUpdate } from "@/app/action/course";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,9 +11,13 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const formSchema = z.object({
   description: z.string().min(1, {
@@ -27,25 +28,30 @@ const formSchema = z.object({
 export const DescriptionForm = ({ initialData, courseId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      description: initialData?.description || "",
-    },
+    defaultValues: initialData || "",
+
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Course updated");
+      console.log(values);
+      setLoading(true)
+      await courseUpdate(courseId, values)
+      toast.success("Course description updated");
       toggleEdit();
       router.refresh();
+      setLoading(false)
     } catch (error) {
       toast.error("Something went wrong");
+      setLoading(false)
     }
   };
 

@@ -13,8 +13,6 @@
 import mongoose from "mongoose";
 
 export const dbConnect = async () => {
-  console.log(process.env?.MONGO_URL);
-
   if (mongoose.connection?.readyState >= 1) {
     console.log("Already connected to the database.");
     return mongoose.connection;

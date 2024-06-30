@@ -14,7 +14,7 @@ import { getTestimonialForCourse } from "./testimonials";
 
 export const getCourseList = async () => {
   await dbConnect();
-  const courses = await Course.find({})
+  const courses = await Course.find({ active: true })
     .select([
       "title",
       "subtitle",
@@ -121,13 +121,8 @@ export const getCourseDetailsByInstructor = async (instructorId, expand) => {
 
 export const created = async (courseData) => {
   try {
-    const connected = await dbConnect();
-    console.log("DB connected");
-    console.log("DB connected:" + connected);
-    console.log("Creating course with data:", courseData);
+    await dbConnect();
     const course = await Course.create(courseData);
-    console.log("Created course in API handler:", course);
-
     return JSON.parse(JSON.stringify(course));
   } catch (error) {
     throw new Error(error.message);
