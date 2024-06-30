@@ -3,27 +3,27 @@ import mongoose, { Schema } from "mongoose";
 const courseSchema = new Schema({
   title: {
     type: String,
-    requried: true,
+    required: true,
   },
   subtitle: {
-    required: true,
     type: String,
   },
   description: {
     type: String,
-    requried: true,
+    required: true,
   },
   thumbnail: {
     type: String,
-    requried: true,
   },
   price: {
     type: Number,
-    requried: true,
+    required: true,
+    default: 0,
   },
   active: {
     type: Boolean,
-    requried: true,
+    required: true,
+    default: false,
   },
   modules: [
     {
@@ -46,22 +46,19 @@ const courseSchema = new Schema({
     },
   ],
 
-  quizSet: {
-    type: Schema.ObjectId,
-    requried: true,
-  },
   learning: {
-    required: true,
     type: [String],
   },
 
   createdOn: {
     required: true,
+    default: Date.now(),
     type: Date,
   },
 
   modifiedOn: {
     required: true,
+    default: Date.now(),
     type: Date,
   },
 });

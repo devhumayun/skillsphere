@@ -118,3 +118,18 @@ export const getCourseDetailsByInstructor = async (instructorId, expand) => {
     rating: avgRating.toPrecision(2),
   };
 };
+
+export const created = async (courseData) => {
+  try {
+    const connected = await dbConnect();
+    console.log("DB connected");
+    console.log("DB connected:" + connected);
+    console.log("Creating course with data:", courseData);
+    const course = await Course.create(courseData);
+    console.log("Created course in API handler:", course);
+
+    return JSON.parse(JSON.stringify(course));
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
