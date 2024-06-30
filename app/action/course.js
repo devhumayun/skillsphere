@@ -1,3 +1,4 @@
+"use server";
 import { created } from "@/quries/course";
 import { dbConnect } from "@/services/mongo";
 
