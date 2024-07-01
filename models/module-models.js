@@ -8,10 +8,10 @@ const moduleSchema = new Schema(
     },
     description: {
       type: String,
-      requried: true,
     },
-    status: {
-      type: String,
+    active: {
+      type: Boolean,
+      default: false,
       requried: true,
     },
     slug: {
@@ -19,14 +19,16 @@ const moduleSchema = new Schema(
       requried: true,
     },
     course: {
-      type: String,
+      type: Schema.ObjectId,
       requried: true,
     },
     lessonIds: {
-      type: [String],
-      requried: true,
+      type: [Schema.ObjectId],
     },
     duration: {
+      type: Number,
+    },
+    order: {
       type: Number,
       requried: true,
     },
