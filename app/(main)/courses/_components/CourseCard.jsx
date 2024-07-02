@@ -5,9 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const CourseCard = ({ course }) => {
+
     return (
         <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-2 h-[330px]">
-            <Link key={course.id} href={`/courses/${course.id}`}>
+            <Link href={`/courses/${course?.id}`}>
                 <div>
                     <div className="relative w-full aspect-video rounded-md overflow-hidden">
                         <Image
