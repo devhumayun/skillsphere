@@ -24,6 +24,7 @@ const moduleSchema = new Schema(
     },
     lessonIds: {
       type: [Schema.ObjectId],
+      ref: "Lesson",
     },
     duration: {
       type: Number,

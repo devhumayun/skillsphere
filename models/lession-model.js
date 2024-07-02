@@ -11,14 +11,15 @@ const lessonSchema = new Schema({
   },
   duration: {
     required: true,
+    default: 0,
     type: Number,
   },
   video_url: {
-    required: true,
     type: String,
   },
-  published: {
+  active: {
     required: true,
+    default: false,
     type: Boolean,
   },
   slug: {
@@ -27,7 +28,12 @@ const lessonSchema = new Schema({
   },
   access: {
     required: true,
+    default: "private",
     type: String,
+  },
+  order: {
+    type: Number,
+    requried: true,
   },
 });
 

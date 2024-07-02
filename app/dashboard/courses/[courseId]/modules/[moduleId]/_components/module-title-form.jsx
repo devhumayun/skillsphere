@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { updateModule } from "@/app/action/module";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { getSlug } from "@/lib/convertData";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -37,11 +39,18 @@ export const ModuleTitleForm = ({ initialData, courseId, chapterId }) => {
 
   const onSubmit = async (values) => {
     try {
+
+      const formData = new FormData()
+      formData.append("title", values?.title)
+      formData.append("slug", getSlug(values?.title))
+
+      await updateModule(chapterId, formData)
+
       toast.success("Module title updated");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong");
+    } catch (error) {
+      toast.error(error);
     }
   };
 
@@ -60,7 +69,7 @@ export const ModuleTitleForm = ({ initialData, courseId, chapterId }) => {
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{"Reactive Accelerator"}</p>}
+      {!isEditing && <p className="text-sm mt-2">{initialData?.title}</p>}
       {isEditing && (
         <Form {...form}>
           <form

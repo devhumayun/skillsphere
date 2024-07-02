@@ -8,3 +8,18 @@ export const getLesson = async (lessionId) => {
 
   return replaceMongoIdInObject(lessons);
 };
+
+export const created = async (lessonData) => {
+  try {
+    const existingLesson = await Lesson.findOne({ slug: lessonData?.slug });
+    if (existingLesson) {
+      throw new Error("This lesson already exists");
+    }
+
+    const lesson = await Lesson.create(lessonData);
+
+    return JSON.parse(JSON.stringify(lesson));
+  } catch (error) {
+    throw new Error(error);
+  }
+};

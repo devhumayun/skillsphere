@@ -21,7 +21,7 @@ export function MainNav({ items, children, loggedInUser }) {
 
     const fullName = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`
 
-    const avatarFallBack = loggedInUser?.firstName.substring(0, 2)
+    const avatarFallBack = loggedInUser?.firstName?.substring(0, 2)
 
     if (session?.error === "RefreshAccessTokenError") {
         redirect("/login")

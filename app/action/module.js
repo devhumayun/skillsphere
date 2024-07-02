@@ -1,6 +1,8 @@
 "use server";
 
+import { replaceMongoIdInObject } from "@/lib/convertData";
 import { Course } from "@/models/course-model";
+import { Lesson } from "@/models/lession-model";
 import { Module } from "@/models/module-models";
 import { created } from "@/quries/modules";
 
@@ -41,5 +43,32 @@ export const reOrderModules = async (data) => {
     );
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const getModule = async (moduleId) => {
+  try {
+    const moduleDetails = await Module.findById(moduleId)
+      .populate({
+        path: "lessonIds",
+        modell: Lesson,
+      })
+      .lean();
+    return replaceMongoIdInObject(moduleDetails);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const updateModule = async (moduleId, data) => {
+  try {
+    const title = data.get("title");
+    const slug = data.get("slug");
+    await Module.findByIdAndUpdate(moduleId, {
+      title,
+      slug,
+    });
+  } catch (error) {
+    throw new Error(error.message);
   }
 };

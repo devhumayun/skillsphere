@@ -21,7 +21,6 @@ const EditCourse = async ({ params: { courseId } }) => {
 
   const course = await getCourseDetails(courseId)
   const categories = await getCategories()
-  console.log(courseId);
   const mappedCategories = categories.map(c => {
     return {
       value: c.title,
