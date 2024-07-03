@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { updateCourseLesson } from "@/app/action/lesson";
 import { Editor } from "@/components/editor";
 import { Preview } from "@/components/preview";
 import { Button } from "@/components/ui/button";
@@ -29,11 +30,12 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
+  const [lessonDesc, setLessonDesc] = useState(initialData.description)
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || "",
+      description: lessonDesc || "",
     },
   });
 
@@ -41,11 +43,13 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Lesson updated");
+      await updateCourseLesson(lessonId, values)
+      setLessonDesc(values?.description)
+      toast.success("Lesson description updated");
       toggleEdit();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error);
     }
   };
 
@@ -73,7 +77,7 @@ export const LessonDescriptionForm = ({ initialData, courseId, lessonId }) => {
         >
           {!initialData.description && "No description"}
           {initialData.description && (
-            <Preview value={initialData.description} />
+            <Preview value={lessonDesc} />
           )}
         </div>
       )}

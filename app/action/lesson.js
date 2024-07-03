@@ -39,3 +39,12 @@ export const reOrderLesson = async (data) => {
     throw new Error(error);
   }
 };
+
+// update lesson
+export const updateCourseLesson = async (lessonId, data) => {
+  try {
+    await Lesson.findByIdAndUpdate(lessonId, data);
+  } catch (error) {
+    throw new Error(error);
+  }
+};

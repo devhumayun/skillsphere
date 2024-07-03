@@ -1,23 +1,19 @@
 import { IconBadge } from "@/components/icon-badge";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  DialogContent
 } from "@/components/ui/dialog";
-import { LayoutDashboard } from "lucide-react";
-import { Eye } from "lucide-react";
-import { Video } from "lucide-react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
-import { LessonTitleForm } from "./lesson-title-form";
-import { LessonDescriptionForm } from "./lesson-description-form";
-import { LessonAccessForm } from "./lesson-access-form";
-import { VideoUrlForm } from "./video-url-form";
 import { CourseActions } from "../../../_components/course-action";
-export const LessonModal = ({ open, setOpen }) => {
+import { LessonAccessForm } from "./lesson-access-form";
+import { LessonDescriptionForm } from "./lesson-description-form";
+import { LessonTitleForm } from "./lesson-title-form";
+import { VideoUrlForm } from "./video-url-form";
+export const LessonModal = ({ open, setOpen, courseId, lesson }) => {
+
+  console.log(lesson);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
@@ -50,14 +46,16 @@ export const LessonModal = ({ open, setOpen }) => {
                   <h2 className="text-xl">Customize Your chapter</h2>
                 </div>
                 <LessonTitleForm
-                  initialData={{}}
-                  courseId={"1"}
-                  lessonId={"1"}
+                  initialData={{ title: lesson?.title }}
+                  courseId={courseId}
+                  lessonId={lesson?.id}
                 />
                 <LessonDescriptionForm
-                  initialData={{}}
-                  courseId={"1"}
-                  lessonId={"1"}
+                  initialData={{
+                    description: lesson?.description
+                  }}
+                  courseId={courseId}
+                  lessonId={lesson?.id}
                 />
               </div>
               <div>
@@ -66,9 +64,9 @@ export const LessonModal = ({ open, setOpen }) => {
                   <h2 className="text-xl">Access Settings</h2>
                 </div>
                 <LessonAccessForm
-                  initialData={{}}
-                  courseId={"1"}
-                  chapterId={"1"}
+                  initialData={{ isFree: lesson?.access !== "private" }}
+                  courseId={courseId}
+                  lessonId={lesson?.id}
                 />
               </div>
             </div>
@@ -79,10 +77,11 @@ export const LessonModal = ({ open, setOpen }) => {
               </div>
               <VideoUrlForm
                 initialData={{
-                  url: "https://www.youtube.com/embed/Cn4G2lZ_g2I?si=8FxqU8_NU6rYOrG1",
+                  url: lesson?.video_url,
+                  duration: lesson?.duration
                 }}
-                courseId={1}
-                lessonId={1}
+                courseId={courseId}
+                lessonId={lesson?.id}
               />
             </div>
           </div>

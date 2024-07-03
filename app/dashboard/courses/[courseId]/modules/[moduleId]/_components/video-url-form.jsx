@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { updateCourseLesson } from "@/app/action/lesson";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { formattedMyTimeDuration } from "@/lib/formateTime";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -34,23 +36,50 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
+  const [videoUrlDuration, setVideoUrlDuration] = useState({
+    url: initialData?.url,
+    duration: formattedMyTimeDuration(initialData.duration)
+  })
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: videoUrlDuration,
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
     try {
-      toast.success("Lesson updated");
-      toggleEdit();
-      router.refresh();
+
+      const payload = {}
+      payload["video_url"] = values?.url
+      const duration = values?.duration
+
+      const durationSplitted = duration.split(":")
+
+      console.log(durationSplitted);
+
+      if (durationSplitted.length === 3) {
+        payload["duration"] = durationSplitted[0] * 3600 + durationSplitted[1] * 60 + durationSplitted[2] * 1
+
+
+        setVideoUrlDuration({
+          url: payload.video_url,
+          duration: payload.duration
+        })
+        await updateCourseLesson(lessonId, payload)
+        toast.success("Lesson updated");
+        toggleEdit();
+        router.refresh();
+      } else {
+        return toast.error("Duration format must be HH:MM:SS")
+      }
+
     } catch {
       toast.error("Something went wrong");
     }
   };
+
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
@@ -70,10 +99,10 @@ export const VideoUrlForm = ({ initialData, courseId, lessonId }) => {
       {!isEditing && (
         <>
           <p className="text-sm mt-2">
-            {"https://www.youtube.com/embed/Cn4G2lZ_g2I?si=8FxqU8_NU6rYOrG1"}
+            {videoUrlDuration?.url}
           </p>
           <div className="mt-6">
-            <VideoPlayer />
+            <VideoPlayer url={videoUrlDuration?.url} />
           </div>
         </>
       )}
