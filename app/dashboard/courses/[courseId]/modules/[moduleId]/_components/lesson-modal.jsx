@@ -5,14 +5,17 @@ import {
 } from "@/components/ui/dialog";
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
-import { CourseActions } from "../../../_components/course-action";
 import { LessonAccessForm } from "./lesson-access-form";
+import { LessonActions } from "./lesson-action";
 import { LessonDescriptionForm } from "./lesson-description-form";
 import { LessonTitleForm } from "./lesson-title-form";
 import { VideoUrlForm } from "./video-url-form";
-export const LessonModal = ({ open, setOpen, courseId, lesson }) => {
+export const LessonModal = ({ open, setOpen, moduleId, courseId, lesson, onclose }) => {
 
-  console.log(lesson);
+  const deleteLesson = () => {
+    setOpen(false)
+    onclose()
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -27,14 +30,14 @@ export const LessonModal = ({ open, setOpen, courseId, lesson }) => {
           <div className="flex items-center justify-between">
             <div className="w-full">
               <Link
-                href={`/dashboard/courses/${1}`}
+                href={`/dashboard/courses/${courseId}/modules/${moduleId}`}
                 className="flex items-center text-sm hover:opacity-75 transition mb-6"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to course setup
               </Link>
               <div className="flex items-center justify-end">
-                <CourseActions />
+                <LessonActions lesson={lesson} moduleId={moduleId} onDelete={deleteLesson} />
               </div>
             </div>
           </div>

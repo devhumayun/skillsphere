@@ -27,17 +27,7 @@ import { LessonModal } from "./lesson-modal";
 const formSchema = z.object({
   title: z.string().min(1),
 });
-const initialLessons = [
-  {
-    id: "1",
-    title: "Module 1",
-    active: true,
-  },
-  {
-    id: "2",
-    title: "Module 2",
-  },
-];
+
 export const LessonForm = ({ initialData, moduleId, courseId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [lessons, setLessons] = useState(initialData);
@@ -82,7 +72,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
       toggleCreating();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
   };
 
@@ -175,7 +165,11 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
           Drag & Drop to reorder the lessons
         </p>
       )}
-      <LessonModal open={isEditing} setOpen={setIsEditing} courseId={courseId} lesson={lessonToEdit} />
+      <LessonModal open={isEditing} setOpen={setIsEditing} moduleId={moduleId} courseId={courseId} lesson={lessonToEdit} onclose={() => {
+        window.location.reload()
+      }} />
     </div>
   );
 };
+
+

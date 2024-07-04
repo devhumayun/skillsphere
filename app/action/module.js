@@ -26,13 +26,13 @@ export const createModule = async (data) => {
     course?.modules.push(moduleCreated?._id);
 
     course.save();
+    return moduleCreated;
   } catch (error) {
     throw new Error(error);
   }
 };
 
 export const reOrderModules = async (data) => {
-  console.log(data);
   try {
     await Promise.all(
       data?.map(async (ele) => {
@@ -70,5 +70,35 @@ export const updateModule = async (moduleId, data) => {
     });
   } catch (error) {
     throw new Error(error.message);
+  }
+};
+
+export const updateModuleStatus = async (moduleId) => {
+  try {
+    const moduleToUpdate = await Module.findById(moduleId);
+    const res = await Module.findByIdAndUpdate(
+      moduleId,
+      {
+        active: !moduleToUpdate.active,
+      },
+      { lean: true }
+    );
+
+    return res.active;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const deleteModule = async (courseId, moduleId) => {
+  try {
+    const course = await Course.findById(courseId);
+    course.modules.pull(moduleId);
+
+    await Module.findByIdAndDelete(moduleId);
+
+    course?.save();
+  } catch (error) {
+    throw new error(error);
   }
 };

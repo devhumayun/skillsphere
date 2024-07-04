@@ -35,13 +35,14 @@ const EditCourse = async ({ params: { courseId } }) => {
 
   return (
     <>
-      <AlertBanner
+
+      {!course?.active && <AlertBanner
         label="This course is unpublished. It will not be visible in the course."
         variant="warning"
-      />
+      />}
       <div className="p-6">
         <div className="flex items-center justify-end">
-          <CourseActions />
+          <CourseActions course={course} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
           <div>
