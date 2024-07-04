@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { formatPrice } from "@/lib/formatPrice";
 import { cn } from "@/lib/utils";
-import { ArrowUpDown, GraduationCap, MoreHorizontal, Pencil, Star } from "lucide-react";
+import { ArrowUpDown, EyeIcon, GraduationCap, MoreHorizontal, Pencil, Star } from "lucide-react";
 import Link from "next/link";
 
 export const columns = [
@@ -96,6 +96,12 @@ export const columns = [
               <DropdownMenuItem className="cursor-pointer">
                 <Star className="h-4 w-4 mr-2 fill-primary" />
                 View Reviews
+              </DropdownMenuItem>
+            </Link>
+            <Link href={`/courses/${id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                <EyeIcon className="h-4 w-4 mr-2" />
+                View Course
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
