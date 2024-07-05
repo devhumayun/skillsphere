@@ -5,6 +5,8 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { updateQuizSetTitle } from "@/app/action/quiz";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,10 +15,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -24,7 +26,7 @@ const formSchema = z.object({
   }),
 });
 
-export const TitleForm = ({ initialData = {} }) => {
+export const TitleForm = ({ initialData, quizSetId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -38,9 +40,12 @@ export const TitleForm = ({ initialData = {} }) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
+
     try {
+      await updateQuizSetTitle(quizSetId, values)
       toggleEdit();
       router.refresh();
+      toast.success("Quiz set title updated!")
     } catch (error) {
       toast.error("Something went wrong");
     }
