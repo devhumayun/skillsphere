@@ -34,6 +34,8 @@ export const QuizSetForm = ({
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
+  const matchedQuizSet = options.find(o => o.value === initialData.quizSetId)
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,10 +78,9 @@ export const QuizSetForm = ({
             !initialData.quizSetId && "text-slate-500 italic"
           )}
         >
-          {"No quiz set selected"}
+          {matchedQuizSet ? <span>{matchedQuizSet.label}</span> : <span>No quiz set selected</span>}
         </p>
       )}
-      {console.log({ options })}
       {isEditing && (
         <Form {...form}>
           <form
