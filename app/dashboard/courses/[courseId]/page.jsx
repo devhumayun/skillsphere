@@ -3,6 +3,7 @@ import { IconBadge } from "@/components/icon-badge";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import { getCategories } from "@/quries/category";
 import { getCourseDetails } from "@/quries/course";
+import { getAllQuizSets } from "@/quries/quizzes";
 import {
   CircleDollarSign,
   LayoutDashboard,
@@ -29,8 +30,19 @@ const EditCourse = async ({ params: { courseId } }) => {
     }
   });
 
-
   const modules = replaceMongoIdInArray(course?.modules).sort((a, b) => a.order - b.order)
+
+  const allActiveQuizSet = await getAllQuizSets(true)
+  let quizSets = []
+
+  if (allActiveQuizSet && allActiveQuizSet.length > 0) {
+    quizSets = allActiveQuizSet.map((quizSet) => {
+      return {
+        value: quizSet.id,
+        label: quizSet.title
+      }
+    })
+  }
 
 
   return (
@@ -62,7 +74,7 @@ const EditCourse = async ({ params: { courseId } }) => {
             <ImageForm initialData={{ imageUrl: `/images/courses/${course?.thumbnail}` }} courseId={courseId} />
             <CategoryForm initialData={{ value: course?.category?.title }} courseId={courseId} options={mappedCategories} />
 
-            <QuizSetForm initialData={{}} courseId={1} />
+            <QuizSetForm initialData={{ quizSetId: course?.quizSet?._id.toString() }} courseId={courseId} options={quizSets} />
           </div>
           <div className="space-y-6">
             <div>

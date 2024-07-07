@@ -19,7 +19,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import QuizEditContext from "@/context/quizContext";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 const formSchema = z.object({
   title: z
@@ -79,6 +81,9 @@ const formSchema = z.object({
 });
 
 export const AddQuizForm = ({ setQuizes, quizSetId }) => {
+
+  const { editQuiz, setEditQuiz } = useContext(QuizEditContext)
+
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),

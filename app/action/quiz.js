@@ -1,7 +1,8 @@
 "use server";
 
-import { getSlug } from "@/lib/convertData";
+import { getSlug, replaceMongoIdInObject } from "@/lib/convertData";
 import { Quizset } from "@/models/quizset-model";
+import { Quiz } from "@/models/quizzes-model";
 import { createQuiz } from "@/quries/quizzes";
 
 export const updateQuizSetTitle = async (quizSetId, data) => {
@@ -46,6 +47,62 @@ export const addQuizToQuizSet = async (quizSetId, data) => {
 
     quizSet.quizIds.push(quizId);
     quizSet.save();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const addQuiz = async (data) => {
+  try {
+    const quizSet = await Quizset.create(data);
+
+    return quizSet._id.toString();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const updateQuizSetStatus = async (quizSetId) => {
+  try {
+    const quizSet = await Quizset.findById(quizSetId);
+    const res = await Quizset.findByIdAndUpdate(
+      quizSetId,
+      { active: !quizSet.active },
+      { lean: true }
+    );
+
+    return res.active;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const deleteQuizSet = async (quizSetId) => {
+  try {
+    await Quizset.findByIdAndDelete(quizSetId);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const deleteQuiz = async (quizId, quizSetId) => {
+  try {
+    const quizSet = await Quizset.findById(quizSetId);
+    quizSet.quizIds.pull(quizId);
+
+    await Quiz.findByIdAndDelete(quizId);
+
+    quizSet.save();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getQuizById = async (quizId) => {
+  try {
+    const quiz = await Quiz.findById(quizId).lean();
+    const convertData = replaceMongoIdInObject(quiz);
+    return convertData;
   } catch (error) {
     throw new Error(error);
   }

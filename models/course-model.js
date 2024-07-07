@@ -49,7 +49,7 @@ const courseSchema = new Schema({
   learning: {
     type: [String],
   },
-
+  quizSet: { type: Schema.ObjectId, ref: "Quizset" },
   createdOn: {
     required: true,
     default: Date.now(),

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { updateQuizIdForAcourse } from "@/app/action/course";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -26,16 +27,7 @@ const formSchema = z.object({
 export const QuizSetForm = ({
   initialData,
   courseId,
-  options = [
-    {
-      value: "quiz_set_1",
-      label: "Quiz Set 1",
-    },
-    {
-      value: "2",
-      label: "Quiz Set 2",
-    },
-  ],
+  options
 }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -53,11 +45,12 @@ export const QuizSetForm = ({
 
   const onSubmit = async (values) => {
     try {
+      await updateQuizIdForAcourse(courseId, values)
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error);
     }
   };
 

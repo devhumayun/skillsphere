@@ -1,10 +1,10 @@
 
 import AlertBanner from "@/components/alert-banner";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getQuizSetById } from "@/quries/quizzes";
-import { Circle, CircleCheck, Pencil, Trash } from "lucide-react";
+import { Circle, CircleCheck } from "lucide-react";
 import { AddQuizForm } from "./_components/add-quiz-form";
+import QuizAction from "./_components/quiz-action";
 import { QuizSetAction } from "./_components/quiz-set-action";
 import { TitleForm } from "./_components/title-form";
 
@@ -26,13 +26,13 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
 
   return (
     <>
-      <AlertBanner
+      {!quizSet.active && <AlertBanner
         label="This course is unpublished. It will not be visible in the course."
         variant="warning"
-      />
+      />}
       <div className="p-6">
         <div className="flex items-center justify-end">
-          <QuizSetAction />
+          <QuizSetAction quizSet={quizSet} />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2  gap-6 mt-16">
           {/* Quiz List */}
@@ -72,18 +72,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                         );
                       })}
                     </div>
-                    <div className="flex items-center justify-end gap-2 mt-6">
-                      <Button variant="ghost" size="sm">
-                        <Pencil className="w-3 mr-1" /> Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="text-destructive"
-                        variant="ghost"
-                      >
-                        <Trash className="w-3 mr-1" /> Delete
-                      </Button>
-                    </div>
+                    <QuizAction quizId={quiz.id} quizSet={quizSet} />
                   </div>
                 );
               })}
