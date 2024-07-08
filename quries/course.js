@@ -7,6 +7,7 @@ import { Course } from "@/models/course-model";
 import { Module } from "@/models/module-models";
 import { Testimonial } from "@/models/testimonial-model";
 
+import { Lesson } from "@/models/lession-model";
 import { User } from "@/models/user-model";
 import { dbConnect } from "@/services/mongo";
 import { getEnrollmentForCourse } from "./enrollments";
@@ -60,6 +61,10 @@ export const getCourseDetails = async (id) => {
     .populate({
       path: "modules",
       model: Module,
+      populate: {
+        path: "lessonIds",
+        model: Lesson,
+      },
     })
     .populate({
       path: "testimonials",

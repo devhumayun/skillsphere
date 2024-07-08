@@ -5,6 +5,10 @@ import CourseLessonList from "./CourseLessonList";
 
 const CourseModulesList = async ({ module }) => {
 
+    const moduleDuration = module.lessonIds?.reduce((acc, obj) => {
+        return acc + obj.duration
+    }, 0)
+
     return (
         <AccordionItem className="border-none" value="item-1">
             <AccordionTrigger>{module?.title}</AccordionTrigger>
@@ -17,27 +21,15 @@ const CourseModulesList = async ({ module }) => {
                     </span>
                     <span className="flex items-center gap-1.5">
                         <Timer className="w-4 h-4" />
-                        {formattedMyTimeDuration(module?.duration)}
+                        {formattedMyTimeDuration(moduleDuration)}
                     </span>
-                    {/* <span className="flex items-center gap-1.5">
-                        <NotepadText className="w-4 h-4" />
-                        10 Notes
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                        <FileQuestion className="w-4 h-4" />
-                        10 Quiz
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                        <Radio className="w-4 h-4" />1 Live Class
-                    </span> */}
                 </div>
-                {/* header ends */}
 
                 <div className="space-y-3">
                     {
                         module?.lessonIds && module.lessonIds.map((lessonId) => {
                             return (
-                                <CourseLessonList key={lessonId} lessonId={lessonId.toString()} />
+                                <CourseLessonList key={lessonId} lessonId={lessonId} />
                             )
                         }
 

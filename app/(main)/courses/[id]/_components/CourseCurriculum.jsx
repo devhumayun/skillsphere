@@ -6,8 +6,12 @@ import CourseModulesList from "./module/CourseModulesList"
 
 const CourseCurriculum = ({ course }) => {
 
-    const totalCourseDuration = course?.modules.reduce((acc, obj) => {
-        return acc + obj.duration
+    const totalCourseDuration = course?.modules?.map((item) => {
+        return item.lessonIds?.reduce((ace, obj) => {
+            return ace + obj.duration
+        }, 0)
+    }).reduce((acc, obj) => {
+        return acc + obj
     }, 0)
 
     return (

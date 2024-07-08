@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
+import { CourseProgress } from "@/components/CourseProgress";
 import { Badge } from "@/components/ui/badge";
 import { getCategory } from "@/quries/category";
+import { getCourseDetails } from "@/quries/course";
 import { getAReport } from "@/quries/report";
 import { getUserByEmail } from "@/quries/user";
 import { BookOpen } from "lucide-react";
@@ -24,10 +26,10 @@ const EnrolledCourseCard = async ({ enrollment }) => {
     const totalQuizAssessments = report?.quizAssessment?.assessments
 
     // total quiz
-    const totalQuiz = report?.quizAssessment?.assessments?.length
+    const totalQuiz = report?.quizAssessment?.assessments?.length ?? 0
 
     // quiz attempted
-    const quizzesTaken = totalQuizAssessments?.filter(a => a.attempted)
+    const quizzesTaken = totalQuizAssessments ? totalQuizAssessments?.filter(a => a.attempted) : []
 
     // find out correct quizzes
 
@@ -38,11 +40,23 @@ const EnrolledCourseCard = async ({ enrollment }) => {
         })
     })?.filter(element => element.length > 0).flat()
 
+    // get course details modules lenght
+    const course = await getCourseDetails(enrollment?.course?._id)
+    const totalmodules = course?.modules?.length
+
+    // total complated modules
+    const totalCompletedModules = report?.totalCompletedModeules ? report?.totalCompletedModeules?.length : 0
+
+    // total progress
+    const totalProgress = totalmodules ? (totalCompletedModules / totalmodules) * 100 : 0
+
     // total quizzes mark
     const markFromQuizzes = totalCorrect?.length * 5
 
+    const otherMarks = report?.quizAssessment?.otherMarks ?? 0
+
     // total marks
-    const totalMarks = report?.quizAssessment?.otherMarks + markFromQuizzes
+    const totalMarks = otherMarks + markFromQuizzes
 
     return (
         <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
@@ -114,11 +128,11 @@ const EnrolledCourseCard = async ({ enrollment }) => {
                     </p>
                 </div>
 
-                {/* <CourseProgress
-						size="sm"
-						value={80}
-						variant={110 === 100 ? "success" : ""}
-					/> */}
+                <CourseProgress
+                    size="sm"
+                    value={totalProgress}
+                    variant={110 === 100 ? "success" : ""}
+                />
             </div>
         </div>
     )
