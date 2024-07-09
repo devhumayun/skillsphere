@@ -19,7 +19,9 @@ async function EnrolledCourses() {
 		<div className="grid sm:grid-cols-2 gap-6">
 			{enrollments.length > 0 ? (
 				enrollments.map((enrollment) => (
-					<EnrolledCourseCard key={enrollment?.id} enrollment={enrollment} />
+					<Link key={enrollment?.id} href={`/courses/${enrollment.course._id.toString()}/lesson`}>
+						<EnrolledCourseCard enrollment={enrollment} />
+					</Link>
 				))
 			) : (
 				<div className="">
