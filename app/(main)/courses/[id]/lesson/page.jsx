@@ -3,11 +3,13 @@ import { Separator } from "@/components/ui/separator";
 import { replaceMongoIdInArray, replaceMongoIdInObject } from "@/lib/convertData";
 import { getCourseDetails } from "@/quries/course";
 import { getLessonBySlug } from "@/quries/lession";
+import { dbConnect } from "@/services/mongo";
 import LessonVideoPlayer from "./_components/LessonVideoPlayer";
 import VideoDescription from "./_components/video-description";
 
 const Course = async ({ params: { id }, searchParams: { name, module } }) => {
 
+	await dbConnect()
 	const course = await getCourseDetails(id)
 	const allModules = replaceMongoIdInArray(course.modules).toSorted((a, b) => a.order - b.order)
 
