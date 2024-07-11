@@ -5,6 +5,8 @@ import { getAReport } from "@/quries/report";
 import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request) {
   try {
     const searchParams = request.nextUrl.searchParams;
