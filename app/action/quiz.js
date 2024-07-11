@@ -4,9 +4,11 @@ import { getSlug, replaceMongoIdInObject } from "@/lib/convertData";
 import { Quizset } from "@/models/quizset-model";
 import { Quiz } from "@/models/quizzes-model";
 import { createQuiz } from "@/quries/quizzes";
+import { dbConnect } from "@/services/mongo";
 
 export const updateQuizSetTitle = async (quizSetId, data) => {
   try {
+    await dbConnect();
     await Quizset.findByIdAndUpdate(quizSetId, data);
   } catch (error) {
     throw new Error(error);
@@ -15,6 +17,7 @@ export const updateQuizSetTitle = async (quizSetId, data) => {
 
 export const addQuizToQuizSet = async (quizSetId, data) => {
   try {
+    await dbConnect();
     // trans form data
     const payload = {};
     payload["title"] = data["title"];
@@ -54,6 +57,7 @@ export const addQuizToQuizSet = async (quizSetId, data) => {
 
 export const addQuiz = async (data) => {
   try {
+    await dbConnect();
     const quizSet = await Quizset.create(data);
 
     return quizSet._id.toString();
@@ -79,6 +83,7 @@ export const updateQuizSetStatus = async (quizSetId) => {
 
 export const deleteQuizSet = async (quizSetId) => {
   try {
+    await dbConnect();
     await Quizset.findByIdAndDelete(quizSetId);
   } catch (error) {
     throw new Error(error);
@@ -87,6 +92,7 @@ export const deleteQuizSet = async (quizSetId) => {
 
 export const deleteQuiz = async (quizId, quizSetId) => {
   try {
+    await dbConnect();
     const quizSet = await Quizset.findById(quizSetId);
     quizSet.quizIds.pull(quizId);
 
@@ -100,6 +106,7 @@ export const deleteQuiz = async (quizId, quizSetId) => {
 
 export const getQuizById = async (quizId) => {
   try {
+    await dbConnect();
     const quiz = await Quiz.findById(quizId).lean();
     const convertData = replaceMongoIdInObject(quiz);
     return convertData;

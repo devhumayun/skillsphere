@@ -121,5 +121,5 @@ export const {
   //   },
   // },
   trustHost: true,
-  // trustHostedDomain: true,
+  trustHostedDomain: true,
 });

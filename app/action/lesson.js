@@ -3,9 +3,11 @@
 import { Lesson } from "@/models/lession-model";
 import { Module } from "@/models/module-models";
 import { created } from "@/quries/lession";
+import { dbConnect } from "@/services/mongo";
 
 export const createLesson = async (data) => {
   try {
+    await dbConnect();
     const title = data.get("title");
     const slug = data.get("slug");
     const order = data.get("order");
@@ -72,6 +74,7 @@ export const updateLessonStatus = async (lessonId) => {
 // delete lesson
 export const deleteLesson = async (lessonId, moduleId) => {
   try {
+    await dbConnect();
     const modules = await Module.findById(moduleId);
     modules?.lessonIds.pull(lessonId);
 

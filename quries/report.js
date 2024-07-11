@@ -7,6 +7,7 @@ import { getCourseDetails } from "./course";
 
 export const getAReport = async (filter) => {
   try {
+    await dbConnect();
     const report = await Report.findOne(filter)
       .populate({
         path: "quizAssessment",
@@ -22,6 +23,7 @@ export const getAReport = async (filter) => {
 
 export const createAReport = async (data) => {
   try {
+    await dbConnect();
     let report = await Report.findOne({
       course: data.courseId,
       student: data.userId,
@@ -64,18 +66,17 @@ export const createAReport = async (data) => {
     }
 
     const course = await getCourseDetails(data.courseId);
-    console.log(course.modules.length);
+
     const courseModules = course?.modules;
     const courseModuleCount = courseModules.length ?? 0;
 
     const competedModules = report?.totalCompletedModeules;
     const completedModuleCount = competedModules?.length ?? 0;
-    console.log(completedModuleCount);
+
     if (
       completedModuleCount >= 1 &&
       completedModuleCount === courseModuleCount
     ) {
-      console.log("course completed");
       report.completed_at = Date.now();
       report.courseComplete = true;
     }

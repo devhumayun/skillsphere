@@ -4,9 +4,11 @@ import {
 } from "@/lib/convertData";
 import { Quizset } from "@/models/quizset-model";
 import { Quiz } from "@/models/quizzes-model";
+import { dbConnect } from "@/services/mongo";
 
 export const getAllQuizSets = async (onlyActive) => {
   try {
+    await dbConnect();
     let quizSets = [];
 
     if (onlyActive) {
@@ -23,6 +25,7 @@ export const getAllQuizSets = async (onlyActive) => {
 
 export const getQuizSetById = async (quizSetId) => {
   try {
+    await dbConnect();
     const quizSet = await Quizset.findById(quizSetId)
       .populate({
         path: "quizIds",
@@ -37,6 +40,7 @@ export const getQuizSetById = async (quizSetId) => {
 
 export const createQuiz = async (data) => {
   try {
+    await dbConnect();
     const quiz = await Quiz.create(data);
 
     return quiz._id.toString();

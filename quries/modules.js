@@ -20,6 +20,7 @@ export const created = async (moduleData) => {
 
 export const getModuleBySlug = async (slug) => {
   try {
+    await dbConnect();
     const moduled = await Module.findOne({ slug: slug });
     return replaceMongoIdInObject(moduled);
   } catch (error) {

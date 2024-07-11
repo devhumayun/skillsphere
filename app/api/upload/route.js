@@ -1,4 +1,5 @@
 import { courseUpdate } from "@/app/action/course";
+import { dbConnect } from "@/services/mongo";
 import fs from "fs";
 import { NextResponse } from "next/server";
 import { pipeline } from "stream";
@@ -6,6 +7,7 @@ import { promisify } from "util";
 const pump = promisify(pipeline);
 
 export async function POST(request, response) {
+  await dbConnect();
   try {
     const formData = await request.formData();
 

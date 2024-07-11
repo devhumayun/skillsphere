@@ -3,6 +3,7 @@ import { Watch } from "@/models/watch-model";
 import { getLesson } from "@/quries/lession";
 import { getModuleBySlug } from "@/quries/modules";
 import { createAReport } from "@/quries/report";
+import { dbConnect } from "@/services/mongo";
 import { NextResponse } from "next/server";
 
 const STARTED = "started";
@@ -17,6 +18,7 @@ async function updateReport(courseId, userId, lessonId, moduleId) {
 }
 
 export async function POST(request) {
+  await dbConnect();
   const { courseId, moduleSlug, lessonId, state, lastTime } =
     await request.json();
   const loggedInUser = await getLoggedInUser();

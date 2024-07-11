@@ -24,6 +24,7 @@ export const createCourse = async (data) => {
 
 export const courseUpdate = async (courseId, updatedValue) => {
   try {
+    await dbConnect();
     const updatedData = await Course.findByIdAndUpdate(courseId, updatedValue, {
       new: true,
     });
@@ -34,6 +35,7 @@ export const courseUpdate = async (courseId, updatedValue) => {
 
 export const updateCourseStatus = async (courseId) => {
   try {
+    await dbConnect();
     const course = await Course.findById(courseId);
     const res = await Course.findByIdAndUpdate(
       courseId,
@@ -51,6 +53,7 @@ export const updateCourseStatus = async (courseId) => {
 
 export const deleteCourse = async (courseId) => {
   try {
+    await dbConnect();
     await Course.findByIdAndDelete(courseId);
   } catch (error) {
     throw new Error(error);
@@ -59,6 +62,7 @@ export const deleteCourse = async (courseId) => {
 
 export const updateQuizIdForAcourse = async (courseId, data) => {
   try {
+    await dbConnect();
     let payload = {};
     payload["quizSet"] = new mongoose.Types.ObjectId(data.quizSetId);
 

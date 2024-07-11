@@ -5,9 +5,11 @@ import { Course } from "@/models/course-model";
 import { Lesson } from "@/models/lession-model";
 import { Module } from "@/models/module-models";
 import { created } from "@/quries/modules";
+import { dbConnect } from "@/services/mongo";
 
 export const createModule = async (data) => {
   try {
+    await dbConnect();
     const title = data.get("title");
     const slug = data.get("slug");
     const courseId = data.get("courseId");
@@ -48,6 +50,7 @@ export const reOrderModules = async (data) => {
 
 export const getModule = async (moduleId) => {
   try {
+    await dbConnect();
     const moduleDetails = await Module.findById(moduleId)
       .populate({
         path: "lessonIds",
@@ -62,6 +65,7 @@ export const getModule = async (moduleId) => {
 
 export const updateModule = async (moduleId, data) => {
   try {
+    await dbConnect();
     const title = data.get("title");
     const slug = data.get("slug");
     await Module.findByIdAndUpdate(moduleId, {
@@ -75,6 +79,7 @@ export const updateModule = async (moduleId, data) => {
 
 export const updateModuleStatus = async (moduleId) => {
   try {
+    await dbConnect();
     const moduleToUpdate = await Module.findById(moduleId);
     const res = await Module.findByIdAndUpdate(
       moduleId,
@@ -92,6 +97,7 @@ export const updateModuleStatus = async (moduleId) => {
 
 export const deleteModule = async (courseId, moduleId) => {
   try {
+    await dbConnect();
     const course = await Course.findById(courseId);
     course.modules.pull(moduleId);
 

@@ -15,6 +15,7 @@ export const getLesson = async (lessionId) => {
 
 export const created = async (lessonData) => {
   try {
+    await dbConnect();
     const existingLesson = await Lesson.findOne({ slug: lessonData?.slug });
     if (existingLesson) {
       throw new Error("This lesson already exists");
@@ -30,6 +31,7 @@ export const created = async (lessonData) => {
 
 export const getLessonBySlug = async (slug) => {
   try {
+    await dbConnect();
     const lesson = await Lesson.findOne({ slug: slug }).lean();
 
     return replaceMongoIdInObject(lesson);

@@ -22,6 +22,7 @@ export const getLoggedInUserAllEnrollments = async (userId) => {
 
 export const hasEnrolledThisCourse = async (courseId, userId) => {
   try {
+    await dbConnect();
     const course = await Enrollment.findOne({
       course: courseId,
       student: userId,
@@ -42,6 +43,8 @@ export const enrollInCourse = async (courseId, userId, paymentMethod) => {
     course: courseId,
     student: userId,
   };
+
+  await dbConnect();
 
   try {
     const res = await Enrollment.create(newData);
