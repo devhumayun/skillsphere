@@ -36,8 +36,6 @@ export async function GET(request) {
       sign: "/sign.png",
     };
 
-    console.log("Fetched completion info:", completionInfo);
-
     const kamalFontUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/fonts/kalam/Kalam-Regular.ttf`;
     const kalamFontBytes = await fetch(kamalFontUrl).then((res) =>
       res.arrayBuffer()
@@ -76,7 +74,6 @@ export async function GET(request) {
     const logoUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/logo.png`;
     const logoResponse = await fetch(logoUrl);
     const logoContentType = logoResponse.headers.get("content-type");
-    console.log("Logo content type:", logoContentType);
 
     if (!logoResponse.ok || !logoContentType.startsWith("image/png")) {
       throw new Error("Failed to fetch logo or invalid content type");
@@ -177,7 +174,6 @@ export async function GET(request) {
     const signUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${completionInfo.sign}`;
     const signResponse = await fetch(signUrl);
     const signContentType = signResponse.headers.get("content-type");
-    console.log("Signature content type:", signContentType);
 
     if (!signResponse.ok || !signContentType.startsWith("image/png")) {
       throw new Error("Failed to fetch signature or invalid content type");
@@ -208,7 +204,6 @@ export async function GET(request) {
     });
 
     const pdfBytes = await pdfDoc.save();
-    console.log(pdfBytes);
     return new Response(pdfBytes, {
       headers: { "content-type": "application/pdf" },
     });
