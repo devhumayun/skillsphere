@@ -2,10 +2,19 @@ import { getLoggedInUser } from "@/lib/loggedInUser";
 import { Watch } from "@/models/watch-model";
 import { getLesson } from "@/quries/lession";
 import { getModuleBySlug } from "@/quries/modules";
+import { createAReport } from "@/quries/report";
 import { NextResponse } from "next/server";
 
 const STARTED = "started";
 const COMPLETED = "completed";
+
+async function updateReport(courseId, userId, lessonId, moduleId) {
+  try {
+    await createAReport({ courseId, userId, lessonId, moduleId });
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 export async function POST(request) {
   const { courseId, moduleSlug, lessonId, state, lastTime } =
@@ -13,8 +22,6 @@ export async function POST(request) {
   const loggedInUser = await getLoggedInUser();
   const lesson = await getLesson(lessonId);
   const moduled = await getModuleBySlug(moduleSlug);
-
-  console.log(loggedInUser);
 
   if (!loggedInUser) {
     return NextResponse("You are not authenticated!", {
@@ -58,12 +65,14 @@ export async function POST(request) {
       if (!found) {
         watchEntry["created_at"] = Date.now();
         await Watch.create(watchEntry);
+        await updateReport(courseId, loggedInUser.id, lesson.id, moduled.id);
       } else {
         if (found.state === STARTED) {
           watchEntry["modified_at"] = Date.now();
           await Watch.findByIdAndUpdate(found._id, {
             state: COMPLETED,
           });
+          await updateReport(courseId, loggedInUser.id, lesson.id, moduled.id);
         }
       }
     }
@@ -76,40 +85,4 @@ export async function POST(request) {
       status: 500,
     });
   }
-
-  // try {
-  //   const found = await Watch.findOne({
-  //     user: loggedInUser.id,
-  //     lesson: lesson.id,
-  //     module: moduled.id,
-  //   }).lean();
-
-  //   if (state === STARTED) {
-  //     if (!found) {
-  //       watchEntry["created_at"] = Date.now();
-  //       await Watch.create(watchEntry);
-  //     }
-  //   } else if (state === COMPLETED) {
-  //     if (!found) {
-  //       watchEntry["created_at"] = Date.now();
-  //       await Watch.create(watchEntry);
-  //     } else {
-  //       if (state === STARTED) {
-  //         watchEntry["modified_at"] = Date.now();
-  //         console.log("completed process...");
-  //         await Watch.findByIdAndUpdate(found._id, {
-  //           state: COMPLETED,
-  //         });
-  //       }
-  //     }
-  //   }
-
-  //   return new NextResponse("Watch record updated successfully.", {
-  //     status: 200,
-  //   });
-  // } catch (error) {
-  //   return NextResponse(error, {
-  //     status: 500,
-  //   });
-  // }
 }

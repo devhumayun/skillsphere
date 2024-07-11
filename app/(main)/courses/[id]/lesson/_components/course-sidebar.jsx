@@ -4,6 +4,7 @@ import { CourseProgress } from "@/components/CourseProgress";
 import { getLoggedInUser } from "@/lib/loggedInUser";
 import { Watch } from "@/models/watch-model";
 import { getCourseDetails } from "@/quries/course";
+import { getAReport } from "@/quries/report";
 import { DownloadCertificate } from "./download-certificate";
 import { GiveReview } from "./give-review";
 import { ModulesSidebar } from "./modules-sidebar";
@@ -32,6 +33,11 @@ export const CourseSidebar = async ({ courseId }) => {
     return module
   }))
 
+  const report = await getAReport({ course: courseId, student: loggedInUser.id })
+  const completedModule = report?.totalCompletedModeules?.length ?? 0
+  const totalModulesInCourse = course?.modules.length
+
+  const courseProgress = completedModule > 0 ? (completedModule / totalModulesInCourse) * 100 : 0
 
   return (
     <>
@@ -40,13 +46,13 @@ export const CourseSidebar = async ({ courseId }) => {
           <h1 className="font-bold lg:hidden">SkillSphers</h1>
           {
             <div className="mt-10">
-              <CourseProgress variant="success" value={80} />
+              <CourseProgress variant="success" value={courseProgress} />
             </div>
           }
         </div>
         <ModulesSidebar courseId={courseId} modules={updatedModules} />
         <div className="w-full px-6">
-          <DownloadCertificate />
+          <DownloadCertificate courseProgress={courseProgress} courseId={courseId} />
           <GiveReview />
         </div>
       </div>

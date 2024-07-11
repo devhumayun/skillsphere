@@ -22,6 +22,14 @@ const reportSchema = new Schema(
       type: Schema.ObjectId,
       ref: "Assessment",
     },
+    courseComplete: {
+      type: Boolean,
+      default: false,
+    },
+    completed_at: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true,
