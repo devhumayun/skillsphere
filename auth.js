@@ -120,6 +120,6 @@ export const {
   //     return session;
   //   },
   // },
-  // trustHost: true,
+  trustHost: true,
   // trustHostedDomain: true,
 });
