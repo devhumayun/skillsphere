@@ -5,9 +5,7 @@ import { dbConnect } from "@/services/mongo";
 export const getUserByEmail = async (email) => {
   try {
     await dbConnect();
-
     const user = await User?.findOne({ email: email }).lean();
-
     return replaceMongoIdInObject(user);
   } catch (error) {
     throw new Error(error);

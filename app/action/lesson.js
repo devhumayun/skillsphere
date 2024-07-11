@@ -30,6 +30,7 @@ export const createLesson = async (data) => {
 // Lesson Re orderd
 export const reOrderLesson = async (data) => {
   try {
+    await dbConnect();
     await Promise.all(
       data?.map(
         async (ele) =>
@@ -46,6 +47,7 @@ export const reOrderLesson = async (data) => {
 // update lesson
 export const updateCourseLesson = async (lessonId, data) => {
   try {
+    await dbConnect();
     await Lesson.findByIdAndUpdate(lessonId, data);
   } catch (error) {
     throw new Error(error);
@@ -55,6 +57,7 @@ export const updateCourseLesson = async (lessonId, data) => {
 // update lesson status published or unpublished
 export const updateLessonStatus = async (lessonId) => {
   try {
+    await dbConnect();
     const lesson = await Lesson.findById(lessonId);
 
     const res = await Lesson.findByIdAndUpdate(
