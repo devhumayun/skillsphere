@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { updateCourseLesson } from "@/app/action/lesson";
-import { Editor } from "@/components/editor";
-import { Preview } from "@/components/preview";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +18,8 @@ import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Editor } from "./Editor";
+import { Preview } from "./Preview";
 
 const formSchema = z.object({
   description: z.string().min(1),
