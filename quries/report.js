@@ -2,6 +2,7 @@ import { replaceMongoIdInObject } from "@/lib/convertData";
 import { Assessment } from "@/models/assessment-model";
 import { Module } from "@/models/module-models";
 import { Report } from "@/models/report-model";
+import { dbConnect } from "@/services/mongo";
 import mongoose from "mongoose";
 import { getCourseDetails } from "./course";
 

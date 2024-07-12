@@ -1,6 +1,8 @@
+import { dbConnect } from "@/services/mongo";
 import AccountSidebar from "./component/AccountSidebar";
 
-function Layout({ tabs }) {
+async function Layout({ tabs }) {
+	await dbConnect()
 	return (
 		<section className="relative pb-16">
 			{/*end container*/}

@@ -5,10 +5,14 @@ import { getCategory } from "@/quries/category";
 import { getCourseDetails } from "@/quries/course";
 import { getAReport } from "@/quries/report";
 import { getUserByEmail } from "@/quries/user";
+import { dbConnect } from "@/services/mongo";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 
 const EnrolledCourseCard = async ({ enrollment }) => {
+
+    await dbConnect()
+
     // get category details
     const category = await getCategory(enrollment?.course?.category._id)
     const session = await auth()

@@ -1,11 +1,13 @@
 import { auth } from "@/auth";
 import { getUserByEmail } from "@/quries/user";
+import { dbConnect } from "@/services/mongo";
 import ContactInfo from "../component/ContactInfo";
 import PasswordChange from "../component/PasswordChange";
 import PersonalDetails from "../component/PersonalDetails";
 
 async function Profile() {
 
+	await dbConnect()
 	const session = await auth()
 
 	const loggedInUser = await getUserByEmail(session?.user?.email)
