@@ -68,6 +68,7 @@ export const addQuiz = async (data) => {
 
 export const updateQuizSetStatus = async (quizSetId) => {
   try {
+    await dbConnect();
     const quizSet = await Quizset.findById(quizSetId);
     const res = await Quizset.findByIdAndUpdate(
       quizSetId,

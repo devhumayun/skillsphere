@@ -2,6 +2,7 @@ import { getModule } from "@/app/action/module";
 import AlertBanner from "@/components/alert-banner";
 import { IconBadge } from "@/components/icon-badge";
 import { replaceMongoIdInArray } from "@/lib/convertData";
+import { dbConnect } from "@/services/mongo";
 import {
   ArrowLeft,
   BookOpenCheck,
@@ -14,6 +15,7 @@ import { ModuleTitleForm } from "./_components/module-title-form";
 
 const Module = async ({ params: { courseId, moduleId } }) => {
 
+  await dbConnect()
   const moduleDetails = await getModule(moduleId)
   const lessons = replaceMongoIdInArray(moduleDetails?.lessonIds).sort((a, b) => a.order - b.order);
 

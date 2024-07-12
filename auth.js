@@ -5,10 +5,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { authConfig } from "./auth.Config";
 import { User } from "./models/user-model";
+import { dbConnect } from "./services/mongo";
 import mongoClientPromise from "./services/mongoClientPromise";
 
 const refreshAccessToken = async (token) => {
   try {
+    await dbConnect();
     const url =
       "https://oauth2.googleapis.com/token?" +
       new URLSearchParams({

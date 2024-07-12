@@ -2,6 +2,7 @@
 import AlertBanner from "@/components/alert-banner";
 import { cn } from "@/lib/utils";
 import { getQuizSetById } from "@/quries/quizzes";
+import { dbConnect } from "@/services/mongo";
 import { Circle, CircleCheck } from "lucide-react";
 import { AddQuizForm } from "./_components/add-quiz-form";
 import QuizAction from "./_components/quiz-action";
@@ -10,6 +11,7 @@ import { TitleForm } from "./_components/title-form";
 
 const EditQuizSet = async ({ params: { quizSetId } }) => {
 
+  await dbConnect()
   const quizSet = await getQuizSetById(quizSetId);
   const quizzes = quizSet?.quizIds?.map((quiz) => {
     return {

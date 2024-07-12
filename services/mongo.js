@@ -32,8 +32,8 @@ export const dbConnect = async () => {
   try {
     console.log("Connecting to the database...");
     const connection = await mongoose.connect(process.env.MONGO_URL, {
-      serverSelectionTimeoutMS: 5000, // Adjust the timeout as needed
-      socketTimeoutMS: 45000, // Socket timeout
+      serverSelectionTimeoutMS: 30000, // Increase server selection timeout
+      socketTimeoutMS: 60000, // Increase socket timeout
     });
 
     console.log("Database connected successfully.");

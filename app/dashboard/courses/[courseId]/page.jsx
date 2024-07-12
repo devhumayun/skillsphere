@@ -4,6 +4,7 @@ import { replaceMongoIdInArray } from "@/lib/convertData";
 import { getCategories } from "@/quries/category";
 import { getCourseDetails } from "@/quries/course";
 import { getAllQuizSets } from "@/quries/quizzes";
+import { dbConnect } from "@/services/mongo";
 import {
   CircleDollarSign,
   LayoutDashboard,
@@ -20,6 +21,7 @@ import { TitleForm } from "./_components/title-form";
 
 const EditCourse = async ({ params: { courseId } }) => {
 
+  await dbConnect()
   const course = await getCourseDetails(courseId)
   const categories = await getCategories()
   const mappedCategories = categories.map(c => {

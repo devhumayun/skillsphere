@@ -1,24 +1,13 @@
 import { REVIEW, instructorDashboardData } from "@/lib/dashboardHelper";
 import { getCourseDetails } from "@/quries/course";
+import { dbConnect } from "@/services/mongo";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 
-const reviews = [
-  {
-    id: 1,
-    student: { name: "John Doe" },
-    review: "Nice Course, Thanks for the help",
-    rating: 5,
-  },
-  {
-    id: 1,
-    student: { name: "John Smilga" },
-    review: "Nice Course, Thanks for the help",
-    rating: 5,
-  },
-];
+
 const ReviewsPage = async ({ params: { courseId } }) => {
 
+  await dbConnect()
   const course = await getCourseDetails(courseId)
 
   const reviewData = await instructorDashboardData(REVIEW)
