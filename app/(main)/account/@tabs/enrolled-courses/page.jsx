@@ -2,11 +2,15 @@ import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { getLoggedInUserAllEnrollments } from "@/quries/enrollments";
 import { getUserByEmail } from "@/quries/user";
+import { dbConnect } from "@/services/mongo";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import EnrolledCourseCard from "../../component/EnrolledCourseCard";
 
 async function EnrolledCourses() {
+
+	await dbConnect()
+
 	const session = await auth();
 	if (!session?.user) {
 		redirect("/login");
