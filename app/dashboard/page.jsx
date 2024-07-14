@@ -1,8 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPrice } from "@/lib/formatPrice";
+import { getLoggedInUser } from "@/lib/loggedInUser";
+import { getCourseDetailsByInstructor } from "@/quries/course";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
 formatPrice;
 
 const DashboardPage = async () => {
+
+  const instructor = await getLoggedInUser()
+
+  if (instructor?.role !== "instructor") {
+    redirect("/login")
+    toast.info("Only instructor can access this resource!")
+  }
+
+  const courseInfo = await getCourseDetailsByInstructor(instructor?.id)
+
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
@@ -12,7 +26,7 @@ const DashboardPage = async () => {
             <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">15</div>
+            <div className="text-2xl font-bold">{courseInfo?.course}</div>
           </CardContent>
         </Card>
         {/* total enrollments */}
@@ -23,7 +37,7 @@ const DashboardPage = async () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1000</div>
+            <div className="text-2xl font-bold">{courseInfo?.enrollments}</div>
           </CardContent>
         </Card>
         {/* total revinue */}
@@ -32,7 +46,7 @@ const DashboardPage = async () => {
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatPrice(12000)}</div>
+            <div className="text-2xl font-bold">{formatPrice(courseInfo?.revenue)}</div>
           </CardContent>
         </Card>
       </div>

@@ -1,4 +1,5 @@
 // import Logo from "@/components/logo";
+import Link from "next/link";
 import { SidebarRoutes } from "./sidebar-routes";
 
 const Sidebar = () => {
@@ -6,7 +7,10 @@ const Sidebar = () => {
     <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm">
       <div className="p-6">
         {/* <Logo /> */}
-        <span className="font-bold text-black">SkillSphers</span>
+        <Link href={"/"}>
+          <span className="font-bold text-black">SkillSphers</span>
+
+        </Link>
       </div>
       <div className="flex flex-col w-full">
         <SidebarRoutes />

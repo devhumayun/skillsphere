@@ -4,20 +4,12 @@ import { getUserByEmail } from "@/quries/user";
 import { SessionProvider } from "next-auth/react";
 const navLinks = [
   {
-    title: "Features",
-    href: "/#features",
+    title: "Home",
+    href: "/",
   },
   {
-    title: "Pricing",
-    href: "/pricing",
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-  },
-  {
-    title: "Documentation",
-    href: "/docs",
+    title: "Courses",
+    href: "/courses",
   },
 ];
 const MainLayout = async ({ children }) => {

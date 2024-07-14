@@ -91,15 +91,30 @@ export const getCourseDetails = async (id) => {
 
 export const getCourseDetailsByInstructor = async (instructorId, expand) => {
   await dbConnect();
-  const courses = await Course.find({ instructor: instructorId }).lean();
+  const publishedCourse = await Course.find({
+    instructor: instructorId,
+    active: true,
+  }).lean();
 
   // calculate total Instructor course's enrollments
   const enrollments = await Promise.all(
-    courses?.map(async (course) => {
+    publishedCourse?.map(async (course) => {
       const enrollment = await getEnrollmentForCourse(course._id.toString());
       return enrollment;
     })
   );
+
+  const groupByCourse = Object.groupBy(
+    enrollments.flat(),
+    ({ course }) => course
+  );
+
+  const totalRevenue = publishedCourse.reduce((acc, course) => {
+    const quantity = groupByCourse[course._id]
+      ? acc + groupByCourse[course._id].length
+      : 0;
+    return acc + quantity * course?.price;
+  }, 0);
 
   const totalEnrollment = enrollments.reduce((acc, obj) => {
     return acc + obj.length;
@@ -107,7 +122,7 @@ export const getCourseDetailsByInstructor = async (instructorId, expand) => {
 
   // calculate total courses rating and review
   const testimonials = await Promise.all(
-    courses?.map(async (course) => {
+    publishedCourse?.map(async (course) => {
       const testimonial = await getTestimonialForCourse(course?._id.toString());
       return testimonial;
     })
@@ -119,18 +134,20 @@ export const getCourseDetailsByInstructor = async (instructorId, expand) => {
     }, 0) / totalTestimonials.length;
 
   if (expand) {
+    const allCourses = await Course.find({ instructor: instructorId }).lean();
     return {
-      course: courses.flat(),
+      course: allCourses.flat(),
       enrollments: enrollments.flat(),
       reviews: totalTestimonials,
     };
   }
 
   return {
-    course: courses.length,
+    course: publishedCourse.length,
     enrollments: totalEnrollment,
     reviews: totalTestimonials.length,
     rating: avgRating.toPrecision(2),
+    revenue: totalRevenue,
   };
 };
 
