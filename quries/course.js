@@ -8,6 +8,8 @@ import { Module } from "@/models/module-models";
 import { Testimonial } from "@/models/testimonial-model";
 
 import { Lesson } from "@/models/lession-model";
+import { Quizset } from "@/models/quizset-model";
+import { Quiz } from "@/models/quizzes-model";
 import { User } from "@/models/user-model";
 import { dbConnect } from "@/services/mongo";
 import { getEnrollmentForCourse } from "./enrollments";
@@ -72,6 +74,14 @@ export const getCourseDetails = async (id) => {
       populate: {
         path: "user",
         model: "User",
+      },
+    })
+    .populate({
+      path: "quizSet",
+      model: Quizset,
+      populate: {
+        path: "quizIds",
+        model: Quiz,
       },
     })
     .lean();

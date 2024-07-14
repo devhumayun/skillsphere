@@ -8,6 +8,7 @@ import { getAReport } from "@/quries/report";
 import { DownloadCertificate } from "./download-certificate";
 import { GiveReview } from "./give-review";
 import { ModulesSidebar } from "./modules-sidebar";
+import Quiz from "./quiz";
 
 export const CourseSidebar = async ({ courseId }) => {
 
@@ -35,9 +36,26 @@ export const CourseSidebar = async ({ courseId }) => {
 
   const report = await getAReport({ course: courseId, student: loggedInUser.id })
   const completedModule = report?.totalCompletedModeules?.length ?? 0
-  const totalModulesInCourse = course?.modules.length
+  const totalModulesInCourse = course?.modules ? course.modules.length : 0;
+
+  // attempted In quiz
+  const totalQuizAssessments = report?.quizAssessment?.assessments
+  const quizzesTaken = totalQuizAssessments ? totalQuizAssessments?.filter(a => a.attempted) : []
+
+  // find quiz correct answer
+  const quizCorrect = quizzesTaken?.map((quiz) => {
+    const item = quiz.options
+    return item?.filter((o) => {
+      return o.isCorrect === true && o.isSelected === true
+    })
+  })?.filter(e => e.length > 0).flat()
+
+  const markFromQuiz = quizCorrect.length * 5
 
   const courseProgress = completedModule > 0 ? (completedModule / totalModulesInCourse) * 100 : 0
+
+  const quizSet = course?.quizSet;
+  const isQuizComplete = report?.quizAssessment ? true : false;
 
   return (
     <>
@@ -54,6 +72,12 @@ export const CourseSidebar = async ({ courseId }) => {
         <div className="w-full px-6">
           <DownloadCertificate courseProgress={courseProgress} courseId={courseId} />
           <GiveReview />
+        </div>
+        <div className="px-6 pt-4">
+          {
+            quizSet &&
+            <Quiz courseProgress={courseProgress} course={course} quizSet={quizSet} isTaken={isQuizComplete} markFromQuiz={markFromQuiz} />
+          }
         </div>
       </div>
 

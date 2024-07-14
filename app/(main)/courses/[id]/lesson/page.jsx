@@ -30,7 +30,7 @@ const Course = async ({ params: { id }, searchParams: { name, module } }) => {
 						<Button size="lg">Enroll</Button>
 					</div>
 					<Separator />
-					<VideoDescription />
+					<VideoDescription courseId={id} lesson={lessonForPlay} />
 				</div>
 			</div>
 		</div>

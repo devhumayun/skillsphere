@@ -1,10 +1,18 @@
 "use server";
 
-import { getSlug, replaceMongoIdInObject } from "@/lib/convertData";
+import {
+  getSlug,
+  replaceMongoIdInArray,
+  replaceMongoIdInObject,
+} from "@/lib/convertData";
+import { getLoggedInUser } from "@/lib/loggedInUser";
+import { Assessment } from "@/models/assessment-model";
 import { Quizset } from "@/models/quizset-model";
 import { Quiz } from "@/models/quizzes-model";
-import { createQuiz } from "@/quries/quizzes";
+import { createQuiz, getQuizSetById } from "@/quries/quizzes";
+import { createReportForAssessment } from "@/quries/report";
 import { dbConnect } from "@/services/mongo";
+import mongoose from "mongoose";
 
 export const updateQuizSetTitle = async (quizSetId, data) => {
   try {
@@ -111,6 +119,60 @@ export const getQuizById = async (quizId) => {
     const quiz = await Quiz.findById(quizId).lean();
     const convertData = replaceMongoIdInObject(quiz);
     return convertData;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const quizParticipate = async (courseId, quizSetId, answers) => {
+  try {
+    const quizSet = await getQuizSetById(quizSetId);
+    const quizzes = replaceMongoIdInArray(quizSet.quizIds);
+
+    const records = quizzes.map((quiz) => {
+      const obj = {};
+      obj.quizId = new mongoose.Types.ObjectId(quiz.id);
+
+      const matched = answers.find((a) => a.quizId === quiz.id);
+      if (matched) {
+        obj.attempted = true;
+      } else {
+        obj.attempted = false;
+      }
+
+      const margedOptions = quiz.options.map((option) => {
+        return {
+          option: option.text,
+          isCorrect: option.is_correct,
+          isSelected: (function () {
+            const matched = answers.find(
+              (a) => a.options[0].option === option.text
+            );
+            if (matched) {
+              return true;
+            } else {
+              return false;
+            }
+          })(),
+        };
+      });
+      obj["options"] = margedOptions;
+      return obj;
+    });
+
+    const assesmentEntry = {};
+    assesmentEntry.assessments = records;
+    assesmentEntry.otherMarks = 0;
+
+    const assessment = await Assessment.create(assesmentEntry);
+
+    const loggedInUser = await getLoggedInUser();
+
+    await createReportForAssessment({
+      courseId: courseId,
+      userId: loggedInUser.id,
+      quizAssessment: assessment?._id,
+    });
   } catch (error) {
     throw new Error(error);
   }
