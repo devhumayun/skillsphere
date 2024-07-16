@@ -26,7 +26,6 @@ const EnrolledCourseCard = async ({ enrollment }) => {
     // get reports by filtered
     const report = await getAReport(filtered)
 
-
     const totalQuizAssessments = report?.quizAssessment?.assessments
 
     // total quiz
