@@ -18,6 +18,7 @@ import { ModulesForm } from "./_components/module-form";
 import { PriceForm } from "./_components/price-form";
 import { QuizSetForm } from "./_components/quiz-set-form";
 import { TitleForm } from "./_components/title-form";
+export const dynamic = 'force-dynamic';
 
 const EditCourse = async ({ params: { courseId } }) => {
 

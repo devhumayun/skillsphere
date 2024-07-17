@@ -12,6 +12,7 @@ import Link from "next/link";
 import { LessonForm } from "./_components/lesson-form";
 import { ModuleActions } from "./_components/module-action";
 import { ModuleTitleForm } from "./_components/module-title-form";
+export const dynamic = 'force-dynamic';
 
 const Module = async ({ params: { courseId, moduleId } }) => {
 

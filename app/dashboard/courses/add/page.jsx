@@ -19,6 +19,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+export const dynamic = 'force-dynamic';
 
 const formSchema = z.object({
   title: z.string().min(1, {
