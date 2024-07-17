@@ -2,7 +2,6 @@ import { getCourseDetails } from "@/quries/course";
 import { redirect } from "next/navigation";
 import CourseDetails from "./_components/CourseDetails";
 import CourseDetailsIntro from "./_components/CourseDetailsIntro";
-import RelatedCourse from "./_components/RelatedCourse";
 import Testimonials from "./_components/Testimonials";
 
 const SingleCoursePage = async ({ params: { id } }) => {
@@ -20,7 +19,7 @@ const SingleCoursePage = async ({ params: { id } }) => {
       {course?.testimonials && (
         <Testimonials testimonials={course.testimonials} />
       )}
-      <RelatedCourse />
+      {/* <RelatedCourse /> */}
     </>
   );
 };

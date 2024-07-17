@@ -2,7 +2,7 @@ import { getAllQuizSets } from "@/quries/quizzes";
 import { dbConnect } from "@/services/mongo";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
-
+export const dynamic = 'force-dynamic';
 
 const QuizSets = async () => {
 

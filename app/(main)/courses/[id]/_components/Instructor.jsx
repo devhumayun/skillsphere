@@ -1,6 +1,7 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { getCourseDetailsByInstructor } from "@/quries/course";
-import { Image, MessageSquare, Presentation, Star, UsersRound } from "lucide-react";
+import { MessageSquare, Presentation, Star, UsersRound } from "lucide-react";
+import Image from "next/image";
 
 const Instructor = async ({ instructor }) => {
 
