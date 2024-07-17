@@ -5,6 +5,7 @@ import { getCourseDetailsByInstructor } from "@/quries/course";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 formatPrice;
+export const dynamic = 'force-dynamic';
 
 const DashboardPage = async () => {
 
