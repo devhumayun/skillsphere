@@ -5,6 +5,7 @@ import { getCourseDetailsByInstructor } from "@/quries/course";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
 formatPrice;
+export const dynamic = 'force-dynamic';
 
 const DashboardPage = async () => {
 
@@ -14,6 +15,8 @@ const DashboardPage = async () => {
     redirect("/login")
     toast.info("Only instructor can access this resource!")
   }
+
+
 
   const courseInfo = await getCourseDetailsByInstructor(instructor?.id)
 
