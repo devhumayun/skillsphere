@@ -6,6 +6,8 @@ import { createAReport } from "@/quries/report";
 import { dbConnect } from "@/services/mongo";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const STARTED = "started";
 const COMPLETED = "completed";
 
