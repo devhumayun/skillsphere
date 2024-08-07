@@ -13,6 +13,7 @@ const COMPLETED = "completed";
 
 async function updateReport(courseId, userId, lessonId, moduleId) {
   try {
+    await dbConnect();
     await createAReport({ courseId, userId, lessonId, moduleId });
   } catch (error) {
     throw new Error(error);
